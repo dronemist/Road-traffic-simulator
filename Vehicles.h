@@ -3,7 +3,7 @@
 #include<string>
 class vehicles
 {
-private:
+protected:
     std::string vehicle_type;
     int vehicle_length;
     int vehicle_width;
@@ -24,8 +24,10 @@ public:
  char getRepresentation(); // function to get the representation of the vehicle in the simulation
  int getLength();
  int getWidth();
- void setXcoordinate(int, bool);
+ float getCurrSpeed();
+ void updateXcoordinate(int, bool);
  void setYcoordinate(int);
+ void setXcoordinate(int);
  void setCurrSpeed(int);
 };
 #endif
