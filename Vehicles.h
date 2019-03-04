@@ -12,6 +12,7 @@ private:
     int x_coordinate_end; // ending x_coordinate
     int y_coordinate_end; // ending y_coordinate
     float vehicle_max_speed;
+    float vehicle_curr_speed;
     float vehicle_max_acceleration;
 public:
  vehicles(std::string, int, int, int, int, float, float);
@@ -25,5 +26,6 @@ public:
  int getWidth();
  void setXcoordinate(int, bool);
  void setYcoordinate(int);
+ void setCurrSpeed(int);
 };
 #endif

@@ -6,7 +6,7 @@
 const long sec_1 = 1000000;
 int main(int argc, char const *argv[])
 {
-    road r1(1,15,4,8,0);
+    road r1(1,15,4,8,false);
     vehicles v("Car");
     int cnt = 0;
     while(v.getXcoordinateEnd()<r1.getLength())
@@ -20,7 +20,9 @@ int main(int argc, char const *argv[])
                 if(j<=v.getXcoordinateStart() && j>=v.getXcoordinateEnd() && i>=v.getYcoordinateStart() && i<=v.getYcoordinateEnd())
                     std::cout<<v.getRepresentation();
                 else
-                    std::cout<<"*";
+                    std::cout<<" ";
+                if (j==r1.getSignal()-1 && r1.getLightSignal()==false)
+                    std::cout<<"|";    
             }
             std::cout<<std::endl;
         }

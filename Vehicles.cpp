@@ -3,12 +3,13 @@
 #include "Vehicles.h"
 
 // See how to provide default values
-vehicles::vehicles(std::string type, int length = 2, int width = 2, int x = 0, int y = 0 ,float max_speed = 1.0f, float max_acceleration = 0.0f)
+vehicles::vehicles(std::string type, int length = 2, int width = 2, int x = -1, int y = 0 ,float max_speed = 5.0f, float max_acceleration = 1.0f)
 {
     vehicle_type = type;
     vehicle_length = length;
     vehicle_width = width;
     vehicle_max_speed = max_speed;
+    vehicle_curr_speed = 0;
     x_coordinate_start = x;
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;
     y_coordinate_start = y;
@@ -54,8 +55,24 @@ void vehicles::setXcoordinate(int signal,bool colour_of_signal)
         signal: the x_coordinate of the signal
         colour_of_signal: the colour of signal
     */
-    if(x_coordinate_start != signal || colour_of_signal == true)
-        x_coordinate_start += vehicle_max_speed + (0.5)*vehicle_max_acceleration;
+    if(colour_of_signal == true)
+    {
+        // if signal is green keep the vehicle going
+        x_coordinate_start += vehicle_curr_speed + (0.5)*vehicle_max_acceleration;
+        vehicle_curr_speed += vehicle_max_acceleration;
+        vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+    }
+    else if(x_coordinate_start < signal && colour_of_signal == false)
+    {
+        // if signal is red the vehicle cannot cross the signal
+        x_coordinate_start = std::min(int(x_coordinate_start+
+                                vehicle_curr_speed + (0.5)*vehicle_max_acceleration),signal);
+        vehicle_curr_speed += vehicle_max_acceleration;
+        vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+    }
+    if(x_coordinate_start == signal && colour_of_signal == false)
+        // the vehicle is supposed to stop at red signal
+        vehicle_curr_speed = 0;
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;    
 }
 char vehicles::getRepresentation()
