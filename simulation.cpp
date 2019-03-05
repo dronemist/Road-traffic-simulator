@@ -26,7 +26,7 @@ public:
     void positionVehicle(int index);
     void printMap();
     void updateXcoordinates();
-    void runSimulation(int time);
+    void runSimulation(int time,std::vector<vehicles> &v);
     void setSignal(bool signal);
 };
 simulation::simulation(road def_road,std::vector<vehicles> &def_vehicles)
@@ -86,7 +86,6 @@ void simulation::positionVehicle(int index)
         {
             if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j)>0)
             {
-                std::cout<<index;
                 // checking if any of the previous vehicles is in front of the current vehicle
                 if(j <= minimum)
                 {
@@ -109,7 +108,9 @@ void simulation::printMap()
             {
                 int temp = sim_map.at(i).at(j); 
                 if(temp>0)
-                    std::cout<<sim_vehicles.at(temp-1).getRepresentation();
+                    {
+                        std::cout<<sim_vehicles.at(temp-1).getRepresentation();
+                    }
                 else if (temp == -1)
                 {
                     std::cout<<"|";
@@ -127,47 +128,54 @@ void simulation::updateXcoordinates()
     for(int k=0;k<sim_vehicles.size();k++)    
         sim_vehicles.at(k).updateXcoordinate(sim_road.getSignal()-1,sim_road.getLightSignal());  
 }
-void simulation::runSimulation(int time)
+void simulation::runSimulation(int time,std::vector<vehicles> &v)
 {
     // run simulation for time seconds
+    // v represents the vector of vehicles to be added, added one per second
     int cnt = 0;
-    vehicles v2("Truck",3,3,-1,1,1,1);
-    vehicles v1("Car",2,2,-1,2,2,1);
-    vehicles v3("bike",1,1,-1,0,3,1);
-    addVehicle(v1);
-    int size = 1;
-    while(cnt <= time && sim_vehicles.size() > 0)
-    {
-        size = sim_vehicles.size(); 
-        for(int k = 0;k < size;k++)
+    while(cnt <= time)
+    { 
+        for(int k = 0;k < sim_vehicles.size();k++)
         {
             setZero(k);
             positionVehicle(k);
         }
-        // Removing vehicles that have left the road
-        // for(int k = 0;k < sim_vehicles.size();k++)
-        // {
-        //     if(sim_vehicles.at(k).getXcoordinateEnd() >= sim_road.getLength())
-        //         deleteVehicle(k);
-        // }
         std::cout<<"Time: "<<cnt<<std::endl;
         printMap();
+        // Removing vehicles that have left the road
+        for(int k = 0;k < sim_vehicles.size();k++)
+        {
+            if(sim_vehicles.at(k).getXcoordinateEnd() >= sim_road.getLength())
+                {
+                    deleteVehicle(k);
+                }
+        }
         cnt++;
-        if(sim_vehicles.size()==1)
-            addVehicle(v2);
-        else if(sim_vehicles.size()==2 && sim_vehicles.at(1).getXcoordinateStart()>=0)
-            addVehicle(v3);    
+        if(v.size() > 0
+        && ( sim_vehicles.size() == 0
+        || sim_vehicles.at(sim_vehicles.size()-1).getXcoordinateStart() > -1 
+        ))
+        {
+            addVehicle(v.at(0));
+            v.erase(v.begin());
+        }
         updateXcoordinates(); 
         usleep(sec_1);
     }
 }
 int main(int argc, char const *argv[])
 {
-    road r1(1,30,4,15,true);
+    road r1(1,10,4,5,false);
     std::vector<vehicles> v;
     simulation s(r1,v);
-    s.runSimulation(30);
-    s.setSignal(false);
-    s.runSimulation(15);
+    vehicles v2("Truck",3,3,-1,1,1,1);
+    vehicles v1("Car",2,2,-1,2,2,1);
+    vehicles v3("bike",1,1,-1,0,3,1);
+    v.push_back(v1);
+    v.push_back(v2);
+    v.push_back(v3);
+    s.runSimulation(20,v);
+    s.setSignal(true);
+    s.runSimulation(5,v);
     return 0;
 }
