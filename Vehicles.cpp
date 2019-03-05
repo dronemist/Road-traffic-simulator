@@ -60,7 +60,7 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         signal: the x_coordinate of the signal
         colour_of_signal: the colour of signal
     */
-    if(colour_of_signal == true)
+    if(colour_of_signal == true || x_coordinate_start >= signal)
     {
         // if signal is green keep the vehicle going
         x_coordinate_start += vehicle_curr_speed + (0.5)*vehicle_max_acceleration;
@@ -68,7 +68,7 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
     }
     // signal-1 is done because vehicle has to stop just before the signal 
-    else if(x_coordinate_start < signal-1 && colour_of_signal == false)
+    else if(x_coordinate_start <= signal-1 && colour_of_signal == false)
     {
         // if signal is red the vehicle cannot cross the signal
         x_coordinate_start = std::min(int(floor(x_coordinate_start+
