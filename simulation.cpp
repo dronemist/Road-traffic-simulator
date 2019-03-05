@@ -1,34 +1,11 @@
-/*
-Notes(to be deleted before submitting)
-sim_map -> array or vector
-*/
 #include <iostream>
 #include <vector>
 #include <unistd.h>
 #include "road.cpp"
 #include "Vehicles.cpp"
+#include "simulation.h"
 // defining sec_1 as 10^6 microseconds
 const long sec_1 = 1000000;
-class simulation
-{
-private:
-    int id;
-    road sim_road; // road for this simulation
-    std::vector<vehicles> sim_vehicles; // vehicles present at a particular time in the simulation
-    std::vector<std::vector<int>> sim_map;
-
-public:
-    simulation(road, std::vector<vehicles>&);
-    simulation();
-    void addVehicle(vehicles v);
-    void deleteVehicle(int index);
-    void setZero(int index);
-    void positionVehicle(int index);
-    void printMap();
-    void updateXcoordinates();
-    void runSimulation(int time,std::vector<vehicles> &v);
-    void setSignal(bool signal);
-};
 simulation::simulation(road def_road,std::vector<vehicles> &def_vehicles)
 {
     id = def_road.getId();
