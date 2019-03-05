@@ -4,7 +4,7 @@
 #include "Vehicles.h"
 
 // See how to provide default values
-vehicles::vehicles(std::string type, int length = 2, int width = 2, int x = -1, int y = 0 ,float max_speed = 2.0f, float max_acceleration = 1.0f)
+vehicles::vehicles(std::string type, int length, int width, int x , int y ,float max_speed , float max_acceleration)
 {
     vehicle_type = type;
     vehicle_length = length;
