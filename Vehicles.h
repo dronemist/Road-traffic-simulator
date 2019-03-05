@@ -15,7 +15,7 @@ private:
     float vehicle_curr_speed;
     float vehicle_max_acceleration;
 public:
- vehicles(std::string, int, int, int, int, float, float);
+ vehicles(std::string, int=2, int=2, int=-1, int=0, float=5.0f, float=1.0f);
  vehicles();
  int getXcoordinateStart();
  int getYcoordinateStart();
