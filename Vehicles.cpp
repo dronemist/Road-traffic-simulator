@@ -4,6 +4,7 @@
 #include "Vehicles.h"
 
 // See how to provide default values
+// The type needs to be specified but others may not be specified and defaulted as given in the header file
 vehicles::vehicles(std::string type, int length, int width, int x , int y ,float max_speed , float max_acceleration)
 {
     vehicle_type = type;
@@ -17,6 +18,7 @@ vehicles::vehicles(std::string type, int length, int width, int x , int y ,float
     y_coordinate_end = y_coordinate_start + vehicle_width - 1;
     vehicle_max_acceleration = max_acceleration;
 }
+//The no argument constructor
 vehicles::vehicles()
 {
     vehicle_type = "Car";
@@ -29,30 +31,43 @@ vehicles::vehicles()
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;
     y_coordinate_end = y_coordinate_start + vehicle_width - 1;
 }
+//returns the x coordinate of the front of the vehicle
 int vehicles::getXcoordinateStart()
 {
     return x_coordinate_start;
 }
+
+//returns the upper y coordinate of the vehicle
 int vehicles::getYcoordinateStart()
 {
     return y_coordinate_start;
 }
+
+//returns the X coordinate of the back of the vehicle
 int vehicles::getXcoordinateEnd()
 {
     return x_coordinate_end;
 }
+
+//returns the lower Y coordinate of vehicle
 int vehicles::getYcoordinateEnd()
 {
     return y_coordinate_end;
 }
+
+//returns the width of the vehicle
 int vehicles::getWidth()
 {
     return vehicle_width;
 }
+
+//returns the current speed of the vehicle
 float vehicles::getCurrSpeed()
 {
     return vehicle_curr_speed;
 }
+
+//updates position of the vehicle according to Newton's Laws of Motion
 void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
 {
     // x_coordinate of a vehicle updated after 1 sec
