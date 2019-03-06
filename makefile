@@ -1,5 +1,5 @@
-OBJS = main_temp.o road.o Vehicles.o
-SOURCE = main_temp.cpp road.cpp Vehicles.cpp
+OBJS = simulation.o road.o Vehicles.o
+SOURCE = simulation.cpp road.cpp Vehicles.cpp
 OUT = sim
 CXXFLAGS =-Wall -g
 CXX = g++
@@ -9,8 +9,8 @@ all: $(OUT)
 $(OUT): $(OBJS)
 	$(CXX) $(OBJS) -o $(OUT) $(CXXFLAGS)
 
-main_temp.o: main_temp.cpp Vehicles.h road.h
-	$(CXX) -c main_temp.cpp -o $@
+simulation.o: simulation.cpp Vehicles.h road.h
+	$(CXX) -c simulation.cpp -o $@
 
 road.o: road.cpp road.h
 	$(CXX) -c road.cpp -o $@

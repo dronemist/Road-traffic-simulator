@@ -5,8 +5,8 @@ sim_map -> array or vector
 #include <iostream>
 #include <vector>
 #include <unistd.h>
-#include "road.cpp"
-#include "Vehicles.cpp"
+#include "road.h"
+#include "Vehicles.h"
 // defining sec_1 as 10^6 microseconds
 const long sec_1 = 1000000;
 class simulation

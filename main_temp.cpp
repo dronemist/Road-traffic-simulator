@@ -1,8 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
-#include "Vehicles.cpp"
-#include "road.cpp"
+#include "Vehicles.h"
+#include "road.h"
 // defining sec_1 as 10^6 microseconds
 const long sec_1 = 1000000;
 int main(int argc, char const *argv[])
