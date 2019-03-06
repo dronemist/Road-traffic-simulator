@@ -20,7 +20,7 @@ public:
     void positionVehicle(int);
     void printMap();
     void updateXcoordinates();
-    void runSimulation(int ,std::vector<vehicles> &);
+    void runSimulation(int, int,std::vector<vehicles> &);
     void setSignal(bool);
 };
 #endif

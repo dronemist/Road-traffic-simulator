@@ -105,12 +105,12 @@ void simulation::updateXcoordinates()
     for(int k=0;k<sim_vehicles.size();k++)    
         sim_vehicles.at(k).updateXcoordinate(sim_road.getSignal()-1,sim_road.getLightSignal());  
 }
-void simulation::runSimulation(int time,std::vector<vehicles> &v)
+void simulation::runSimulation(int start_time,int end_time,std::vector<vehicles> &v)
 {
-    // run simulation for time seconds
+    // run simulation from start_time to end_time
     // v represents the vector of vehicles to be added, added one per second
-    int cnt = 0;
-    while(cnt <= time)
+    int cnt = start_time;
+    while(cnt <= end_time)
     { 
         for(int k = 0;k < sim_vehicles.size();k++)
         {
@@ -121,12 +121,8 @@ void simulation::runSimulation(int time,std::vector<vehicles> &v)
         printMap();
         // Removing vehicles that have left the road
         for(int k = 0;k < sim_vehicles.size();k++)
-        {
             if(sim_vehicles.at(k).getXcoordinateEnd() >= sim_road.getLength())
-                {
                     deleteVehicle(k);
-                }
-        }
         cnt++;
         if(v.size() > 0
         && ( sim_vehicles.size() == 0
@@ -142,7 +138,7 @@ void simulation::runSimulation(int time,std::vector<vehicles> &v)
 }
 int main(int argc, char const *argv[])
 {
-    road r1(1,10,4,5,false);
+    road r1(1,30,4,15,true);
     std::vector<vehicles> v;
     simulation s(r1,v);
     vehicles v2("Truck",3,3,-1,1,1,1);
@@ -151,8 +147,9 @@ int main(int argc, char const *argv[])
     v.push_back(v1);
     v.push_back(v2);
     v.push_back(v3);
-    s.runSimulation(20,v);
-    s.setSignal(true);
-    s.runSimulation(5,v);
+    s.runSimulation(0,20,v);
+    v.push_back(v2);
+    s.setSignal(false);
+    s.runSimulation(21,25,v);
     return 0;
 }
