@@ -5,6 +5,7 @@ class vehicles
 {
 protected:
     std::string vehicle_type;
+    std::string vehicle_colour;
     int vehicle_length;
     int vehicle_width;
     int x_coordinate_start; // starting x_coordinate
@@ -13,9 +14,10 @@ protected:
     int y_coordinate_end; // ending y_coordinate
     float vehicle_max_speed;
     float vehicle_curr_speed;
+    float vehicle_def_speed; // the initial speed of the vehicle when added
     float vehicle_max_acceleration;
 public:
- vehicles(std::string, int=2, int=2, int=-1, int=0, float=5.0f, float=1.0f);
+ vehicles(std::string,std::string,int=2, int=2, int=-1, int=0, float=5.0f, float=1.0f,float = 1);
  vehicles();
  int getXcoordinateStart();
  int getYcoordinateStart();
@@ -25,6 +27,7 @@ public:
  int getLength();
  int getWidth();
  float getCurrSpeed();
+ float getDefCurrSpeed();
  void updateXcoordinate(int, bool);
  void setYcoordinate(int);
  void setXcoordinate(int);

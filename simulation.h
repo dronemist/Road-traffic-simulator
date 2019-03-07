@@ -14,13 +14,17 @@ private:
 public:
     simulation(road, std::vector<vehicles>&);
     simulation();
+    void setRoad(road);
+    void setVehicles(std::vector<vehicles>&);
     void addVehicle(vehicles);
     void deleteVehicle(int);
+    bool canBeAdded(vehicles);
     void setZero(int);
     void positionVehicle(int);
     void printMap();
     void updateXcoordinates();
-    void runSimulation(int, int,std::vector<vehicles> &);
+    void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, int);
     void setSignal(bool);
+
 };
 #endif

@@ -3,15 +3,17 @@
 #include <cmath>
 #include "Vehicles.h"
 
-// See how to provide default values
 // The type needs to be specified but others may not be specified and defaulted as given in the header file
-vehicles::vehicles(std::string type, int length, int width, int x , int y ,float max_speed , float max_acceleration)
+vehicles::vehicles(std::string type,std::string colour, int length, int width, int x , int y ,float max_speed , float max_acceleration,float curr_speed)
 {
+    curr_speed = std::min(curr_speed,max_speed);
     vehicle_type = type;
+    vehicle_colour = colour;
     vehicle_length = length;
     vehicle_width = width;
     vehicle_max_speed = max_speed;
-    vehicle_curr_speed = 0;
+    vehicle_curr_speed = curr_speed;
+    vehicle_def_speed = curr_speed;
     x_coordinate_start = x;
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;
     y_coordinate_start = y;
@@ -114,4 +116,8 @@ char vehicles::getRepresentation()
 {
     // Each vehicle is represented by the first character of its string
     return vehicle_type[0];
+}
+float vehicles::getDefCurrSpeed()
+{
+    return vehicle_def_speed;
 }

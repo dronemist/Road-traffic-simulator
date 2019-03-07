@@ -3,19 +3,19 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "road.h"
-#include "Vehicles.h"
+#include "road.cpp"
+#include "Vehicles.cpp"
+#include "simulation.cpp"
 using namespace std;
-
 void vec_print(vector<int> &v);
-void vecs_print(vector<string> &v);
-
 int main() {
 
 	//Define all default values
 	int road_id=1, road_length=30, road_width=5, road_signal=15;
 	float def_speed=1.0f, def_acc=1.0f;
 	bool color_signal=false;
+	int y=0;//y coordinate wher the vehicle is to be added
+	simulation s1;
 	//These are the vectors containing the condensed information of the config file
 	vector<vehicles> vcls;	//vector of vehicles in order of their entry.
 	vector<int> v_times;	//vector of the time instances when vehicles enter. Has same size as vcls
@@ -25,7 +25,7 @@ int main() {
 	//vehicle specs
 	string vtype="NONE";
 	int v_count=0;
-	int t=0;
+	int t=1;
 	int c_l=0,c_w=0,b_l=0,b_w=0,bus_l=0,bus_w=0,t_l=0,t_w=0;
 	float c_ms=def_speed, c_acc = def_acc, b_ms=def_speed, b_acc = def_acc, bus_ms=def_speed, bus_acc = def_acc, t_ms=def_speed, t_acc = def_acc;
 
@@ -39,6 +39,7 @@ int main() {
 		bool sim_start=false;
 		while(getline(config_file,line))
 		{
+			
 			//do this line-wise
 			stringstream wstr(line);
 			vector<string> words;
@@ -56,8 +57,6 @@ int main() {
 				continue;
 			if(!sim_start)
 			{
-				//cout<<words.size()<<endl;
-				//cout<<words.at(0)<<", "<<words.at(1)<<", "<<words.at(2)<<endl;
 				if(words.at(0)=="Road_Id")
 					road_id = stoi(words.at(2));
 				else if(words.at(0)== "Road_Length")
@@ -125,7 +124,11 @@ int main() {
 				}
 
 				else if(words.at(0)=="START")
-					sim_start=true;
+					{
+						sim_start=true;
+						road r1(road_id,road_length,road_width,road_signal,false);
+						s1.setRoad(r1);
+					}
 			}
 			else
 			{
@@ -136,61 +139,73 @@ int main() {
 						{
 							sig_colors.push_back(false);
 							sig_times.push_back(t+v_count);
+							s1.setSignal(false);
 						}
 					else if(words.at(1)=="GREEN")
 						{
 							sig_colors.push_back(true);
-							sig_times.push_back(t+v_count);	
+							sig_times.push_back(t+v_count);
+							s1.setSignal(true);	
 						}
 					v_count=0;
 				}
-
 				if(words.at(0)=="Car")
 				{
-					vcls.push_back(vehicles("Car",c_l,c_w,0,0,c_ms,c_acc));
+					if(y + c_w > road_width)
+						y=0;
+					vcls.push_back(vehicles("Car","",c_l,c_w,0,y,c_ms,c_acc));
+					y+=c_w; 
 					v_times.push_back(t + v_count);
 					colors.push_back(words.at(1));
 					v_count++;
 				}
 				else if(words.at(0)=="bike")
 				{
-					vcls.push_back(vehicles("bike",b_l,b_w,0,0,b_ms,b_acc));
+					if(y + b_w > road_width)
+						y=0;
+					vcls.push_back(vehicles("bike","",b_l,b_w,0,y,b_ms,b_acc));
+					y+=b_w; 
 					v_times.push_back(t + v_count);
 					colors.push_back(words.at(1));
 					v_count++;
 				}
 				else if(words.at(0)=="Bus")
 				{
-					vcls.push_back(vehicles("Bus",bus_l,bus_w,0,0,bus_ms,bus_acc));
+					if(y + bus_w > road_width)
+						y=0;
+					vcls.push_back(vehicles("Bus","",bus_l,bus_w,0,y,bus_ms,bus_acc));
+					y+=bus_w; 
 					v_times.push_back(t + v_count);
 					colors.push_back(words.at(1));
 					v_count++;
 				}
 				else if(words.at(0)=="Truck")
 				{
-					vcls.push_back(vehicles("Truck",t_l,t_w,0,0,t_ms,t_acc));
+					if(y + t_w > road_width)
+						y=0;
+					vcls.push_back(vehicles("Truck","",t_l,t_w,0,y,t_ms,t_acc));
+					y+=t_w; 
 					v_times.push_back(t + v_count);
 					colors.push_back(words.at(1));
 					v_count++;
 				}
-
 				if(words.at(0)=="Pass")
 				{
-					t+=stoi(words.at(1));
+					s1.runSimulation(vcls,v_times,false,t-1,t+vcls.size()+stoi(words.at(1))-2);
+					t += (v_count+stoi(words.at(1))-1);
 					v_count=0;
+				}
+				if(words.at(0)=="END")
+				{
+					s1.runSimulation(vcls,v_times,true,t);
+					break;
 				}
 			}
 		}
-
 		config_file.close();
 	}
 	else cout<<"Cannot open File! ";
-	//cout<<"Hello"<<endl;
 	cout<<endl;
-	vec_print(v_times);
-	vec_print(sig_times);
-	vecs_print(colors);
-
 	return 0;
 }
 
