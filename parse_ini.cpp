@@ -3,9 +3,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include "road.cpp"
-#include "Vehicles.cpp"
-#include "simulation.cpp"
+#include "road.h"
+#include "Vehicles.h"
+#include "simulation.h"
 using namespace std;
 void vec_print(vector<int> &v);
 int main() {
@@ -101,25 +101,26 @@ int main() {
 				else if(words.at(0)=="Vehicle_MaxSpeed")
 				{
 					if(vtype=="Car")
-						c_ms = stoi(words.at(2));
+						c_ms = stof(words.at(2));
+						//cout<<"c_ms has been reset to "<<c_ms<<"and the stof was"<<words.at(2)<<endl;
 					if(vtype=="bike")
-						b_ms = stoi(words.at(2));
+						b_ms = stof(words.at(2));
 					if(vtype=="Bus")
-						bus_ms = stoi(words.at(2));
+						bus_ms = stof(words.at(2));
 					if(vtype=="Truck")
-						t_ms = stoi(words.at(2));
+						t_ms = stof(words.at(2));
 				}
 
 				else if(words.at(0)=="Vehicle_Acceleration")
 				{
 					if(vtype=="Car")
-						c_acc = stoi(words.at(2));
+						c_acc = stof(words.at(2));
 					if(vtype=="bike")
-						b_acc = stoi(words.at(2));
+						b_acc = stof(words.at(2));
 					if(vtype=="Bus")
-						bus_acc = stoi(words.at(2));
+						bus_acc = stof(words.at(2));
 					if(vtype=="Truck")
-						t_acc = stoi(words.at(2));
+						t_acc = stof(words.at(2));
 				}
 
 				else if(words.at(0)=="START")
@@ -151,6 +152,7 @@ int main() {
 				{
 					if(y + c_w > road_width)
 						y=0;
+					//cout<<c_l<<" "<<c_w<<" "<<c_ms<<" "<<c_acc<<endl;
 					vcls.push_back(vehicles("Car",words.at(1),c_l,c_w,0,y,c_ms,c_acc));
 					v_times.push_back(t);
 					s1.runSimulation(vcls,v_times,false,t,t);

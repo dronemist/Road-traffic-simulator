@@ -125,7 +125,7 @@ void simulation::updateXcoordinates()
     for(int k=0;k<sim_vehicles.size();k++)    
         sim_vehicles.at(k).updateXcoordinate(sim_road.getSignal()-1,sim_road.getLightSignal());  
 }
-void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time,int end_time = -1)
+void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time,int end_time)
 {
     // run simulation from start_time to end_time
     // v represents the vector of vehicles to be added, added one per second
