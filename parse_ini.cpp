@@ -31,7 +31,6 @@ int main() {
 
 	string line;
 	string word;
-	//printf("Opening file\n");
 	ifstream config_file ("config.ini");
 	if (config_file.is_open())
 	{
@@ -147,53 +146,51 @@ int main() {
 							sig_times.push_back(t+v_count);
 							s1.setSignal(true);	
 						}
-					v_count=0;
 				}
 				if(words.at(0)=="Car")
 				{
 					if(y + c_w > road_width)
 						y=0;
-					vcls.push_back(vehicles("Car","",c_l,c_w,0,y,c_ms,c_acc));
-					y+=c_w; 
-					v_times.push_back(t + v_count);
-					colors.push_back(words.at(1));
-					v_count++;
+					vcls.push_back(vehicles("Car",words.at(1),c_l,c_w,0,y,c_ms,c_acc));
+					v_times.push_back(t);
+					s1.runSimulation(vcls,v_times,false,t,t);
+					t++;
+					y+=c_w;
 				}
 				else if(words.at(0)=="bike")
 				{
 					if(y + b_w > road_width)
 						y=0;
-					vcls.push_back(vehicles("bike","",b_l,b_w,0,y,b_ms,b_acc));
+					vcls.push_back(vehicles("bike",words.at(1),b_l,b_w,0,y,b_ms,b_acc));
+					v_times.push_back(t);
+					s1.runSimulation(vcls,v_times,false,t,t);
+					t++;
 					y+=b_w; 
-					v_times.push_back(t + v_count);
-					colors.push_back(words.at(1));
-					v_count++;
 				}
 				else if(words.at(0)=="Bus")
 				{
 					if(y + bus_w > road_width)
 						y=0;
-					vcls.push_back(vehicles("Bus","",bus_l,bus_w,0,y,bus_ms,bus_acc));
+					vcls.push_back(vehicles("Bus",words.at(1),bus_l,bus_w,0,y,bus_ms,bus_acc));
+					v_times.push_back(t);
+					s1.runSimulation(vcls,v_times,false,t,t);
+					t++;
 					y+=bus_w; 
-					v_times.push_back(t + v_count);
-					colors.push_back(words.at(1));
-					v_count++;
 				}
 				else if(words.at(0)=="Truck")
 				{
 					if(y + t_w > road_width)
 						y=0;
-					vcls.push_back(vehicles("Truck","",t_l,t_w,0,y,t_ms,t_acc));
+					vcls.push_back(vehicles("Truck",words.at(1),t_l,t_w,0,y,t_ms,t_acc));
+					v_times.push_back(t);
+					s1.runSimulation(vcls,v_times,false,t,t);
+					t++;
 					y+=t_w; 
-					v_times.push_back(t + v_count);
-					colors.push_back(words.at(1));
-					v_count++;
 				}
 				if(words.at(0)=="Pass")
 				{
-					s1.runSimulation(vcls,v_times,false,t-1,t+vcls.size()+stoi(words.at(1))-2);
-					t += (v_count+stoi(words.at(1))-1);
-					v_count=0;
+					s1.runSimulation(vcls,v_times,false,t,t+stoi(words.at(1))-1);
+					t += stoi(words.at(1));
 				}
 				if(words.at(0)=="END")
 				{

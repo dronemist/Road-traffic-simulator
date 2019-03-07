@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <unistd.h>
-#include "road.cpp"
-#include "Vehicles.cpp"
+#include "road.h"
+#include "Vehicles.h"
 #include "simulation.h"
 // defining sec_1 as 10^6 microseconds
 const long sec_1 = 1000000;
@@ -163,25 +163,25 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         usleep(sec_1);
     }
 }
-int main(int argc, char const *argv[])
-{
-    road r1(1,10,4,15,true);
-    std::vector<vehicles> v;
-    std::vector<int> t;
-    t.push_back(1);
-    t.push_back(2);
-   // t.push_back(3);
-    simulation s(r1,v);
-    vehicles v2("Truck","",3,3,0,1,1,1);
-    vehicles v1("Car","",2,2,0,2,1,1);
-    vehicles v3("bike","",1,1,0,0,1,1);
-    v.push_back(v1);
-    v.push_back(v3);
-    //v.push_back(v2);
-    s.runSimulation(v,t,true,0);
-    v.push_back(v3);
-    t.push_back(22);
-    // s.setSignal(true);
-    // s.runSimulation(v,t,true,21);
-    return 0;
-}
+// int main(int argc, char const *argv[])
+// {
+//     road r1(1,10,4,15,true);
+//     std::vector<vehicles> v;
+//     std::vector<int> t;
+//     t.push_back(1);
+//     t.push_back(2);
+//    // t.push_back(3);
+//     simulation s(r1,v);
+//     vehicles v2("Truck","",3,3,0,1,1,1);
+//     vehicles v1("Car","",2,2,0,2,1,1);
+//     vehicles v3("bike","",1,1,0,0,1,1);
+//     v.push_back(v1);
+//     v.push_back(v3);
+//     //v.push_back(v2);
+//     s.runSimulation(v,t,true,0);
+//     v.push_back(v3);
+//     t.push_back(22);
+//     // s.setSignal(true);
+//     // s.runSimulation(v,t,true,21);
+//     return 0;
+// }
