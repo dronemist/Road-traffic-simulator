@@ -65,9 +65,17 @@ int main() {
 				else if(words.at(0)=="Road_Signal")
 					road_signal = stoi(words.at(2));
 				else if(words.at(0)=="Default_MaxSpeed")
-					def_speed = stof(words.at(2)); 
+					{
+						def_speed = stof(words.at(2)); 
+
+						c_ms=def_speed; b_ms=def_speed; bus_ms=def_speed; t_ms=def_speed;
+					}
 				else if(words.at(0)=="Default_Acceleration")
-					 def_acc = stof(words.at(2)); 
+					 {
+					 	def_acc = stof(words.at(2)); 
+
+						c_acc = def_acc; b_acc = def_acc; bus_acc = def_acc; t_acc = def_acc;
+					 }
 
 				else if(words.at(0)=="Vehicle_Type")
 				{
