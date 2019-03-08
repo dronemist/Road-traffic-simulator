@@ -6,6 +6,10 @@
 // The type needs to be specified but others may not be specified and defaulted as given in the header file
 vehicles::vehicles(std::string type,std::string colour, int length, int width, int x , int y ,float max_speed , float max_acceleration,float curr_speed)
 {
+    if(curr_speed >= max_speed)
+        is_accelerating = false;
+    else
+        is_accelerating = true;
     curr_speed = std::min(curr_speed,max_speed);
     vehicle_type = type;
     vehicle_colour = colour;
@@ -77,21 +81,41 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         signal: the x_coordinate of the signal
         colour_of_signal: the colour of signal
     */
+    if(vehicle_curr_speed == vehicle_max_speed)
+        is_accelerating = false;
+    else
+        is_accelerating = true;    
     if(colour_of_signal == true || x_coordinate_start >= signal)
     {
         // if signal is green keep the vehicle going
-        x_coordinate_start += vehicle_curr_speed + (0.5)*vehicle_max_acceleration;
-        vehicle_curr_speed += vehicle_max_acceleration;
-        vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+        if(is_accelerating)
+        {   
+            x_coordinate_start += vehicle_curr_speed + (0.5)*vehicle_max_acceleration;    
+            vehicle_curr_speed += vehicle_max_acceleration;
+            vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+        }
+        else
+        {
+            x_coordinate_start += vehicle_curr_speed;
+        }
     }
     // signal-1 is done because vehicle has to stop just before the signal 
     else if(x_coordinate_start <= signal-1 && colour_of_signal == false)
     {
         // if signal is red the vehicle cannot cross the signal
-        x_coordinate_start = std::min(int(floor(x_coordinate_start+
-                                vehicle_curr_speed + (0.5)*vehicle_max_acceleration)),signal-1);
-        vehicle_curr_speed += vehicle_max_acceleration;
-        vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+        if(is_accelerating)
+        {
+            x_coordinate_start = std::min(int(floor(x_coordinate_start+
+                                    vehicle_curr_speed + (0.5)*vehicle_max_acceleration)),signal-1);
+            vehicle_curr_speed += vehicle_max_acceleration;
+            vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
+        }
+        else
+        {
+            x_coordinate_start = std::min(int(x_coordinate_start+
+                                    vehicle_curr_speed),signal-1);
+        }
+        
     }
     if(x_coordinate_start == signal-1 && colour_of_signal == false)
         // the vehicle is supposed to stop at red signal
@@ -102,6 +126,10 @@ void vehicles::setXcoordinate(int x)
 {
     x_coordinate_start = x;
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;
+}
+bool vehicles::getIsAccelerating()
+{
+    return is_accelerating;
 }
 void vehicles::setYcoordinate(int y)
 {
