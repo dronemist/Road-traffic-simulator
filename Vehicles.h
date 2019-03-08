@@ -30,6 +30,8 @@ public:
  int getWidth();
  float getCurrSpeed();
  float getDefCurrSpeed();
+ float getMaxAcceleration();
+ float getMaxDeceleration();
  bool getIsAccelerating();
  void updateXcoordinate(int, bool);
  void setYcoordinate(int);

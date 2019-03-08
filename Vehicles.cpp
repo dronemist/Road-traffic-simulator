@@ -23,6 +23,7 @@ vehicles::vehicles(std::string type,std::string colour, int length, int width, i
     y_coordinate_start = y;
     y_coordinate_end = y_coordinate_start + vehicle_width - 1;
     vehicle_max_acceleration = max_acceleration;
+    vehicle_max_deceleration = max_acceleration;
 }
 //The no argument constructor
 vehicles::vehicles()
@@ -113,8 +114,10 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         else
         {
             x_coordinate_start = std::min(int(x_coordinate_start+
-                                    vehicle_curr_speed),signal-1);
+                                    vehicle_curr_speed),signal-1);                        
         }
+        if(x_coordinate_start == signal-1)
+            vehicle_curr_speed = 0;
         
     }
     if(x_coordinate_start == signal-1 && colour_of_signal == false)
@@ -148,4 +151,12 @@ char vehicles::getRepresentation()
 float vehicles::getDefCurrSpeed()
 {
     return vehicle_def_speed;
+}
+float vehicles::getMaxAcceleration()
+{
+    return vehicle_max_acceleration;
+}
+float vehicles::getMaxDeceleration()
+{
+    return vehicle_max_deceleration;
 }
