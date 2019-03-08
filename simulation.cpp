@@ -7,6 +7,7 @@
 #include "simulation.h"
 // defining sec_1 as 10^6 microseconds
 const long sec_1 = 1000000;
+
 simulation::simulation(road def_road,std::vector<vehicles> &def_vehicles)
 {
     id = def_road.getId();
@@ -163,6 +164,10 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         updateXcoordinates(); 
         usleep(sec_1);
     }
+}
+std::vector<vehicles> simulation::getSimVehicles()
+{
+    return sim_vehicles;
 }
 // int main(int argc, char const *argv[])
 // {

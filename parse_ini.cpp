@@ -3,12 +3,40 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 #include "road.h"
 #include "Vehicles.h"
 #include "simulation.h"
 using namespace std;
 void vec_print(vector<int> &v);
-int main() {
+
+void display(simulation);
+void reshape(int, int);
+void timer(int);
+
+void init()
+{
+    glClearColor(0.0,0.0,0.0,1.0);
+}
+
+int main(int argc, char**argv) {
+
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+
+	glutInitWindowPosition(200, 100);
+	glutInitWindowSize(500,500);
+
+	glutCreateWindow("Indian Road");
+
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+	glutTimerFunc(0, timer,0);
+	init();
+
+	glutMainLoop();
 
 	//Define all default values
 	int road_id=1, road_length=30, road_width=5, road_signal=15;
@@ -226,4 +254,38 @@ void vecs_print(vector<string> &v)
 {
 	for (int i = 0; i < v.size(); i++)
 		cout<<v.at(i)<<endl;
+}
+//HERE I HAVE DEFINED A VARIABLE WHICH REPRESENTS THE X COORDINATE
+float dum_x = -10.0;
+void display(simulation s)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glLoadIdentity();
+	// s.getSimVehicles(); this will give the vehicle vector
+	//HERE I HAVE DEFINED A RECTANGLE WITH THE FIRST 2 COORDINATES REPRESENTING A VERTEX AND THE LAST 2, THE OPP. VERTEX
+	//COULD YOU DO THE SAME FOR SIM_VEHICLES? I have defined coordinates for sim_vehicles in the same way 
+	glRectd(dum_x, 1.0, dum_x+2.0, -1.0);
+	//YOU CAN GIVE COLOR ACCD TO THE INI FILE AND THE POSITION ACCORDING TO THE SIMULATION. FOR THAT WE NEED THOSE
+	// DATA POINTS GLOBALLY. SO EXTRACT THEM AS VECTORS AND MAKE THE NECESSARY RECTANGLES 
+
+	glEnd();
+
+	glutSwapBuffers();
+}
+
+void reshape(int w, int h)
+{
+	glViewport(0,0, (GLsizei)w, (GLsizei)h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(-10, 10, -10, 10);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void timer(int)
+{
+	glutPostRedisplay();
+	glutTimerFunc(1000/60, timer,0);
+	dum_x+=0.15;
+	//HERE YOU CAN COMMENT dum_x INCREMENT
 }

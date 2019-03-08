@@ -25,6 +25,6 @@ public:
     void updateXcoordinates();
     void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, int=-1);
     void setSignal(bool);
-
+    std::vector<vehicles> getSimVehicles();
 };
 #endif
