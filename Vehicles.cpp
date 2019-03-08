@@ -157,3 +157,7 @@ float vehicles::getMaxDeceleration()
 {
     return vehicle_max_deceleration;
 }
+std::string vehicles::getColour()
+{
+    return vehicle_colour;
+}

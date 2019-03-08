@@ -32,6 +32,7 @@ public:
  float getDefCurrSpeed();
  float getMaxAcceleration();
  float getMaxDeceleration();
+ std::string getColour();
  bool getIsAccelerating();
  void updateXcoordinate(int, bool);
  void setYcoordinate(int);
