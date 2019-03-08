@@ -116,9 +116,6 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
             x_coordinate_start = std::min(int(x_coordinate_start+
                                     vehicle_curr_speed),signal-1);                        
         }
-        if(x_coordinate_start == signal-1)
-            vehicle_curr_speed = 0;
-        
     }
     if(x_coordinate_start == signal-1 && colour_of_signal == false)
         // the vehicle is supposed to stop at red signal
