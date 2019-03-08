@@ -1,7 +1,7 @@
 OBJS = parse_ini.o simulation.o road.o Vehicles.o
 SOURCE =parse_ini.cpp simulation.cpp road.cpp Vehicles.cpp
 OUT = sim
-CXXFLAGS =-Wall -g
+CXXFLAGS =-Wall -g -lglut -lGLU -lGL
 CXX = g++
 
 all: $(OUT)
