@@ -16,6 +16,8 @@ protected:
     float vehicle_curr_speed;
     float vehicle_def_speed; // the initial speed of the vehicle when added
     float vehicle_max_acceleration;
+    float vehicle_max_deceleration;
+    bool is_accelerating;
 public:
  vehicles(std::string,std::string,int=2, int=2, int=-1, int=0, float=5.0f, float=1.0f,float = 1);
  vehicles();
@@ -28,6 +30,9 @@ public:
  int getWidth();
  float getCurrSpeed();
  float getDefCurrSpeed();
+ float getMaxAcceleration();
+ float getMaxDeceleration();
+ bool getIsAccelerating();
  void updateXcoordinate(int, bool);
  void setYcoordinate(int);
  void setXcoordinate(int);
