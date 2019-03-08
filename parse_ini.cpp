@@ -255,20 +255,19 @@ void vecs_print(vector<string> &v)
 	for (int i = 0; i < v.size(); i++)
 		cout<<v.at(i)<<endl;
 }
-
+//HERE I HAVE DEFINED A VARIABLE WHICH REPRESENTS THE X COORDINATE
 float dum_x = -10.0;
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
 
-	//draw
-	glBegin(GL_POLYGON);
-
-	glVertex2f(dum_x, 1.0);
-	glVertex2f(dum_x, -1.0);
-	glVertex2f(dum_x+2.0, -1.0);
-	glVertex2f(dum_x+2.0, 1.0);
+	
+	//HERE I HAVE DEFINED A RECTANGLE WITH THE FIRST 2 COORDINATES REPRESENTING A VERTEX AND THE LAST 2, THE OPP. VERTEX
+	//COULD YOU DO THE SAME FOR SIM_VEHICLES?
+	glRectd(dum_x, 1.0, dum_x+2.0, -1.0);
+	//YOU CAN GIVE COLOR ACCD TO THE INI FILE AND THE POSITION ACCORDING TO THE SIMULATION. FOR THAT WE NEED THOSE
+	// DATA POINTS GLOBALLY. SO EXTRACT THEM AS VECTORS AND MAKE THE NECESSARY RECTANGLES 
 
 	glEnd();
 
@@ -289,4 +288,5 @@ void timer(int)
 	glutPostRedisplay();
 	glutTimerFunc(1000/60, timer,0);
 	dum_x+=0.15;
+	//HERE YOU CAN COMMENT dum_x INCREMENT
 }
