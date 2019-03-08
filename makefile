@@ -1,5 +1,5 @@
-OBJS = simulation.o road.o Vehicles.o
-SOURCE = simulation.cpp road.cpp Vehicles.cpp
+OBJS = parse_ini.o simulation.o road.o Vehicles.o
+SOURCE =parse_ini.cpp simulation.cpp road.cpp Vehicles.cpp
 OUT = sim
 CXXFLAGS =-Wall -g
 CXX = g++
@@ -9,7 +9,9 @@ all: $(OUT)
 $(OUT): $(OBJS)
 	$(CXX) $(OBJS) -o $(OUT) $(CXXFLAGS)
 
-simulation.o: simulation.cpp Vehicles.h road.h
+parse_ini.o: parse_ini.cpp simulation.h Vehicles.h road.h
+
+simulation.o: simulation.cpp simulation.h Vehicles.h road.h
 	$(CXX) -c simulation.cpp -o $@
 
 road.o: road.cpp road.h
