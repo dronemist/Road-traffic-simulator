@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <unistd.h>
+#include <cmath>
 #include "road.h"
 #include "Vehicles.h"
 #include "simulation.h"
@@ -79,7 +80,7 @@ void simulation::positionVehicle(int index)
                 {
                     sim_vehicles.at(index).setXcoordinate(j-1);
                     minimum = j-1;
-                    sim_vehicles.at(index).setCurrSpeed(std::min(sim_vehicles.at(sim_map.at(i).at(j)).getCurrSpeed(),sim_vehicles.at(index).getCurrSpeed()));
+                    sim_vehicles.at(index).setCurrSpeed(std::min(sim_vehicles.at(sim_map.at(i).at(j)-1).getCurrSpeed(),sim_vehicles.at(index).getCurrSpeed()));
                 }
             }
         }
@@ -165,23 +166,23 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
 }
 // int main(int argc, char const *argv[])
 // {
-//     road r1(1,10,4,15,true);
+//     road r1(1,30,4,15,false);
 //     std::vector<vehicles> v;
 //     std::vector<int> t;
 //     t.push_back(1);
 //     t.push_back(2);
-//    // t.push_back(3);
+//     t.push_back(3);
 //     simulation s(r1,v);
-//     vehicles v2("Truck","",3,3,0,1,1,1);
-//     vehicles v1("Car","",2,2,0,2,1,1);
-//     vehicles v3("bike","",1,1,0,0,1,1);
+//     vehicles v2("Truck","",3,3,0,1,2,1);
+//     vehicles v1("Car","",2,2,0,2,3,2);
+//     vehicles v3("bike","",1,1,0,0,2,2);
 //     v.push_back(v1);
 //     v.push_back(v3);
-//     //v.push_back(v2);
-//     s.runSimulation(v,t,true,0);
+//     v.push_back(v2);
+//     s.runSimulation(v,t,false,0,20);
 //     v.push_back(v3);
 //     t.push_back(22);
-//     // s.setSignal(true);
-//     // s.runSimulation(v,t,true,21);
+//     s.setSignal(true);
+//     s.runSimulation(v,t,true,21);
 //     return 0;
 // }
