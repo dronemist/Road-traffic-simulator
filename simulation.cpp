@@ -174,15 +174,15 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
             int dum_len = v1.getLength();
             std::string dum_col = v1.getColour();
             float r=0.0,g=0.0,b = 0.0;
-            if(dum_col == "Red")
+            if(dum_col == "RED")
                 r=1.0;
             else
                 r=0.0;
-            if(dum_col == "Blue")
+            if(dum_col == "BLUE")
                 b=1.0;
             else
                 b=0.0;
-            if(dum_col == "Green")
+            if(dum_col == "GREEN")
                 g=1.0;
             else
                 g=0.0;
