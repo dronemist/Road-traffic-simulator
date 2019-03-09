@@ -51,10 +51,10 @@ int main(int argc, char**argv) {
 
 	// // glutDisplayFunc(display);
 	//  glutReshapeFunc(reshape);
-    glViewport(0, 0, 640, 480);
+    glViewport(71, 0, 640, 480);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(-3,30,-10,10);
+    gluOrtho2D(-4,32,-10,10);
     glMatrixMode(GL_MODELVIEW);
 
 	// // glutTimerFunc(0, timer,0);
