@@ -169,9 +169,9 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         {
             v1 = sim_vehicles.at(i);
             int dum_x = v1.getXcoordinateStart();
-            int dum_y = v1.getYcoordinateStart();
-            int dum_wid = v1.getWidth();
-            int dum_len = v1.getLength();
+            int dum_y = -1*v1.getYcoordinateStart();
+            int dum_x_end = v1.getXcoordinateEnd();
+            int dum_y_end = -1*v1.getYcoordinateEnd()-1;
             std::string dum_col = v1.getColour();
             float r=0.0,g=0.0,b = 0.0;
             if(dum_col == "RED")
@@ -186,8 +186,8 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 g=1.0;
             else
                 g=0.0;
-
-            glRecti(dum_x, dum_y, dum_x+dum_len, dum_y+dum_wid);
+            std::cout<<"x_start,x_end,y_start,y_end are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<"\n";
+            glRecti(dum_x, dum_y, dum_x_end, dum_y_end);
             glColor3f(r, g, b);
         }
 
