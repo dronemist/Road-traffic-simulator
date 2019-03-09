@@ -187,8 +187,9 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
             else
                 g=0.0;
             std::cout<<"x_start,x_end,y_start,y_end, color are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<", "<<dum_col<<"\n";
-            glRecti(dum_x, dum_y, dum_x_end, dum_y_end);
             glColor3f(r, g, b);
+            glRecti(dum_x, dum_y, dum_x_end, dum_y_end);
+            
         }
 
 
