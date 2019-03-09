@@ -2,11 +2,20 @@
 #include <vector>
 #include <unistd.h>
 #include <cmath>
+#include <string>
+#include <GLFW/glfw3.h>
 #include "road.h"
 #include "Vehicles.h"
 #include "simulation.h"
 // defining sec_1 as 10^6 microseconds
+
+
+
 const long sec_1 = 1000000;
+// void (simulation::*disp)(void) = &simulation::display;
+// void (simulation::*resh)(int,int) = &simulation::reshape;
+
+
 
 simulation::simulation(road def_road,std::vector<vehicles> &def_vehicles)
 {
@@ -127,7 +136,7 @@ void simulation::updateXcoordinates()
     for(int k=0;k<sim_vehicles.size();k++)    
         sim_vehicles.at(k).updateXcoordinate(sim_road.getSignal()-1,sim_road.getLightSignal());  
 }
-void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time,int end_time)
+void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time,GLFWwindow* window,int end_time)
 {
     // run simulation from start_time to end_time
     // v represents the vector of vehicles to be added, added one per second
@@ -150,6 +159,48 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         }
         std::cout<<"Time: "<<cnt<<std::endl;
         printMap();
+
+        /* Render here */
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        vehicles v1;
+        for(int i=0;i<sim_vehicles.size();i++)
+        {
+            v1 = sim_vehicles.at(i);
+            int dum_x = v1.getXcoordinateStart();
+            int dum_y = v1.getYcoordinateStart();
+            int dum_wid = v1.getWidth();
+            int dum_len = v1.getLength();
+            std::string dum_col = v1.getColour();
+            float r=0.0,g=0.0,b = 0.0;
+            if(dum_col == "Red")
+                r=1.0;
+            else
+                r=0.0;
+            if(dum_col == "Blue")
+                b=1.0;
+            else
+                b=0.0;
+            if(dum_col == "Green")
+                g=1.0;
+            else
+                g=0.0;
+
+            glRecti(dum_x, dum_y, dum_x+dum_len, dum_y+dum_wid);
+            glColor3f(r, g, b);
+        }
+
+
+        //glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+
+        /* Poll for and process events */
+        glfwPollEvents();
+
+
         // Removing vehicles that have left the road
         for(int k = 0;k < sim_vehicles.size();k++)
         {    
@@ -191,3 +242,6 @@ std::vector<vehicles> simulation::getSimVehicles()
 //     s.runSimulation(v,t,true,21);
 //     return 0;
 // }
+
+
+

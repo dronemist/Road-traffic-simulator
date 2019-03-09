@@ -3,40 +3,64 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <GL/gl.h>
+#include <GLFW/glfw3.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
 #include "road.h"
 #include "Vehicles.h"
 #include "simulation.h"
 using namespace std;
 void vec_print(vector<int> &v);
 
-void display(simulation);
-void reshape(int, int);
-void timer(int);
+//void display(simulation);
+// void reshape(int, int);
+//void timer(int);
 
-void init()
-{
-    glClearColor(0.0,0.0,0.0,1.0);
-}
+// void init()
+// {
+//     glClearColor(0.0,0.0,0.0,1.0);
+// }
 
 int main(int argc, char**argv) {
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
-	glutInitWindowPosition(200, 100);
-	glutInitWindowSize(500,500);
 
-	glutCreateWindow("Indian Road");
+	GLFWwindow* window; 
+	
+	/* Initialize the library */
+    if (!glfwInit())
+        {cout<<"Could not initialize library ";return -1;}
 
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutTimerFunc(0, timer,0);
-	init();
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(640, 480, "Indian Road", NULL, NULL);
+    if (!window)
+    {
+        {cout<<"Could not make window ";glfwTerminate();}
+        return -1;
+    }
 
-	glutMainLoop();
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+
+	// glutInit(&argc, argv);
+	// glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+
+	// glutInitWindowPosition(200, 100);
+	// glutInitWindowSize(500,500);
+
+	// // glutCreateWindow("Indian Road");
+
+	// // glutDisplayFunc(display);
+	//  glutReshapeFunc(reshape);
+    glViewport(0, 0, 640, 480);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-3,30,-10,10);
+    glMatrixMode(GL_MODELVIEW);
+
+	// // glutTimerFunc(0, timer,0);
+	// init();
+
+	// glutMainLoop();
 
 	//Define all default values
 	int road_id=1, road_length=30, road_width=5, road_signal=15;
@@ -191,7 +215,7 @@ int main(int argc, char**argv) {
 					//cout<<c_l<<" "<<c_w<<" "<<c_ms<<" "<<c_acc<<endl;
 					vcls.push_back(vehicles("Car",words.at(1),c_l,c_w,0,y,c_ms,c_acc));
 					v_times.push_back(t);
-					s1.runSimulation(vcls,v_times,false,t,t);
+					s1.runSimulation(vcls,v_times,false,t,window,t);
 					t++;
 					y+=c_w;
 				}
@@ -201,7 +225,7 @@ int main(int argc, char**argv) {
 						y=0;
 					vcls.push_back(vehicles("bike",words.at(1),b_l,b_w,0,y,b_ms,b_acc));
 					v_times.push_back(t);
-					s1.runSimulation(vcls,v_times,false,t,t);
+					s1.runSimulation(vcls,v_times,false,t,window,t);
 					t++;
 					y+=b_w; 
 				}
@@ -211,7 +235,7 @@ int main(int argc, char**argv) {
 						y=0;
 					vcls.push_back(vehicles("Bus",words.at(1),bus_l,bus_w,0,y,bus_ms,bus_acc));
 					v_times.push_back(t);
-					s1.runSimulation(vcls,v_times,false,t,t);
+					s1.runSimulation(vcls,v_times,false,t,window,t);
 					t++;
 					y+=bus_w; 
 				}
@@ -221,18 +245,18 @@ int main(int argc, char**argv) {
 						y=0;
 					vcls.push_back(vehicles("Truck",words.at(1),t_l,t_w,0,y,t_ms,t_acc));
 					v_times.push_back(t);
-					s1.runSimulation(vcls,v_times,false,t,t);
+					s1.runSimulation(vcls,v_times,false,t,window,t);
 					t++;
 					y+=t_w; 
 				}
 				if(words.at(0)=="Pass")
 				{
-					s1.runSimulation(vcls,v_times,false,t,t+stoi(words.at(1))-1);
+					s1.runSimulation(vcls,v_times,false,t,window,t+stoi(words.at(1))-1);
 					t += stoi(words.at(1));
 				}
 				if(words.at(0)=="END")
 				{
-					s1.runSimulation(vcls,v_times,true,t);
+					s1.runSimulation(vcls,v_times,true,t,window);
 					break;
 				}
 			}
@@ -241,6 +265,8 @@ int main(int argc, char**argv) {
 	}
 	else cout<<"Cannot open File! ";
 	cout<<endl;
+
+	glfwTerminate();
 	return 0;
 }
 
@@ -256,36 +282,29 @@ void vecs_print(vector<string> &v)
 		cout<<v.at(i)<<endl;
 }
 //HERE I HAVE DEFINED A VARIABLE WHICH REPRESENTS THE X COORDINATE
-float dum_x = -10.0;
-void display(simulation s)
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();
-	// s.getSimVehicles(); this will give the vehicle vector
-	//HERE I HAVE DEFINED A RECTANGLE WITH THE FIRST 2 COORDINATES REPRESENTING A VERTEX AND THE LAST 2, THE OPP. VERTEX
-	//COULD YOU DO THE SAME FOR SIM_VEHICLES? I have defined coordinates for sim_vehicles in the same way 
-	glRectd(dum_x, 1.0, dum_x+2.0, -1.0);
-	//YOU CAN GIVE COLOR ACCD TO THE INI FILE AND THE POSITION ACCORDING TO THE SIMULATION. FOR THAT WE NEED THOSE
-	// DATA POINTS GLOBALLY. SO EXTRACT THEM AS VECTORS AND MAKE THE NECESSARY RECTANGLES 
+//float dum_x = -10.0;
+// void display(simulation s)
+// {
+// 	glClear(GL_COLOR_BUFFER_BIT);
+// 	glLoadIdentity();
+// 	// s.getSimVehicles(); this will give the vehicle vector
+// 	//HERE I HAVE DEFINED A RECTANGLE WITH THE FIRST 2 COORDINATES REPRESENTING A VERTEX AND THE LAST 2, THE OPP. VERTEX
+// 	//COULD YOU DO THE SAME FOR SIM_VEHICLES? I have defined coordinates for sim_vehicles in the same way 
+// 	glRectd(dum_x, 1.0, dum_x+2.0, -1.0);
+// 	//YOU CAN GIVE COLOR ACCD TO THE INI FILE AND THE POSITION ACCORDING TO THE SIMULATION. FOR THAT WE NEED THOSE
+// 	// DATA POINTS GLOBALLY. SO EXTRACT THEM AS VECTORS AND MAKE THE NECESSARY RECTANGLES 
 
-	glEnd();
+// 	glEnd();
 
-	glutSwapBuffers();
-}
+// 	glutSwapBuffers();
+// }
 
-void reshape(int w, int h)
-{
-	glViewport(0,0, (GLsizei)w, (GLsizei)h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(-10, 10, -10, 10);
-	glMatrixMode(GL_MODELVIEW);
-}
 
-void timer(int)
-{
-	glutPostRedisplay();
-	glutTimerFunc(1000/60, timer,0);
-	dum_x+=0.15;
-	//HERE YOU CAN COMMENT dum_x INCREMENT
-}
+
+// void timer(int)
+// {
+// 	glutPostRedisplay();
+// 	glutTimerFunc(1000/60, timer,0);
+// 	dum_x+=0.15;
+// 	//HERE YOU CAN COMMENT dum_x INCREMENT
+// }

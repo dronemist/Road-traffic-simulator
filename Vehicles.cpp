@@ -145,6 +145,12 @@ char vehicles::getRepresentation()
     // Each vehicle is represented by the first character of its string
     return vehicle_type[0];
 }
+//returns the width of the vehicle
+int vehicles::getLength()
+{
+    return vehicle_length;
+}
+
 float vehicles::getDefCurrSpeed()
 {
     return vehicle_def_speed;

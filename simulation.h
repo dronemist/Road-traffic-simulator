@@ -1,6 +1,7 @@
 #ifndef __SIMULATION_H__
 #define __SIMULATION_H__
 #include<vector>
+#include <GLFW/glfw3.h>
 #include "road.h"
 #include "Vehicles.h"
 class simulation
@@ -23,8 +24,9 @@ public:
     void positionVehicle(int);
     void printMap();
     void updateXcoordinates();
-    void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, int=-1);
+    void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, GLFWwindow* window,int=-1);
     void setSignal(bool);
     std::vector<vehicles> getSimVehicles();
+
 };
 #endif
