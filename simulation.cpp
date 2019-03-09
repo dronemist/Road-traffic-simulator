@@ -165,13 +165,24 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
         vehicles v1;
+        int sig_pos;
+        float sig_col;
+        sig_pos = sim_road.getSignal();
+            if(!sim_road.getLightSignal())
+                sig_col = 1.0;
+            else
+                sig_col=0.0;
+        glColor3f(sig_col,0,0);
+        glRecti(sig_pos-1, -10, sig_pos, 10);
         for(int i=0;i<sim_vehicles.size();i++)
         {
+    
             v1 = sim_vehicles.at(i);
-            int dum_x = v1.getXcoordinateStart();
-            int dum_y = -1*v1.getYcoordinateStart();
-            int dum_x_end = v1.getXcoordinateEnd();
-            int dum_y_end = -1*v1.getYcoordinateEnd()-1;
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            float dum_x = v1.getXcoordinateStart();
+            float dum_y = -1*v1.getYcoordinateStart()-0.1;
+            float dum_x_end = v1.getXcoordinateEnd();
+            float dum_y_end = -1*v1.getYcoordinateEnd()-1+0.1;
             std::string dum_col = v1.getColour();
             float r=0.0,g=0.0,b = 0.0;
             if(dum_col == "RED")
@@ -188,8 +199,9 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 g=0.0;
             std::cout<<"x_start,x_end,y_start,y_end, color are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<", "<<dum_col<<"\n";
             glColor3f(r, g, b);
-            glRecti(dum_x, dum_y, dum_x_end, dum_y_end);
-            
+            glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
+               
+        
         }
 
 
