@@ -9,8 +9,6 @@
 #include "simulation.h"
 // defining sec_1 as 10^6 microseconds
 
-
-
 const long sec_1 = 1000000;
 // void (simulation::*disp)(void) = &simulation::display;
 // void (simulation::*resh)(int,int) = &simulation::reshape;
@@ -99,6 +97,7 @@ void simulation::positionVehicle(int index)
         for(int j=std::max(0,sim_vehicles.at(index).getXcoordinateEnd());j <= std::min(sim_road.getLength()-1,sim_vehicles.at(index).getXcoordinateStart());j++)
                 sim_map.at(i).at(j) = index+1;
 }
+// Checking if a vehicle can be added to the simulation
 bool simulation::canBeAdded(vehicles v)
 {
     for(int i=v.getYcoordinateStart();i<=v.getYcoordinateEnd();i++)
@@ -108,6 +107,7 @@ bool simulation::canBeAdded(vehicles v)
     }
     return true;
 }
+// function to printmap to the terminal
 void simulation::printMap()
 {
         for(int i=0;i<sim_road.getWidth();i++)
@@ -157,6 +157,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
             setZero(k);
             positionVehicle(k);
         }
+        // Printing to terminal
         std::cout<<"Time: "<<cnt<<std::endl;
         printMap();
 
@@ -167,6 +168,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         vehicles v1;
         int sig_pos;
         float sig_col;
+        // displaying the traffic signal
         sig_pos = sim_road.getSignal();
             if(!sim_road.getLightSignal())
                 sig_col = 1.0;
@@ -174,6 +176,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 sig_col=0.0;
         glColor3f(sig_col,0,0);
         glRecti(sig_pos-1, -10, sig_pos, 10);
+        // Displaying different vehicles at different points in time
         for(int i=0;i<sim_vehicles.size();i++)
         {
     
@@ -197,16 +200,13 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 g=1.0;
             else
                 g=0.0;
-            std::cout<<"x_start,x_end,y_start,y_end, color are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<", "<<dum_col<<"\n";
+            // std::cout<<"x_start,x_end,y_start,y_end, color are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<", "<<dum_col<<"\n";
             glColor3f(r, g, b);
             glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
                
         
         }
-
-
         //glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
-
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 

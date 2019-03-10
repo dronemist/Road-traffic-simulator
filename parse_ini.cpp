@@ -99,10 +99,8 @@ int main(int argc, char**argv) {
 				//cout<<word<<endl;
 				if(word[0]=='#')
 					break;
-				//cout<<word<<" ";
 				words.push_back(word);
 			}
-			//cout<<endl;
 			//Decide the assignment on the basis of words vector 
 			if(words.size()<1)
 				continue;
