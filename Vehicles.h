@@ -9,6 +9,7 @@ protected:
     int vehicle_length;
     int vehicle_width;
     int x_coordinate_start; // starting x_coordinate
+    int previous_x_coordinate_start;
     int y_coordinate_start; // starting y_coordinate
     int x_coordinate_end; // ending x_coordinate
     int y_coordinate_end; // ending y_coordinate

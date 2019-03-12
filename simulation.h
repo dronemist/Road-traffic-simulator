@@ -26,6 +26,8 @@ public:
     void updateXcoordinates();
     void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, GLFWwindow* window,int=-1);
     void setSignal(bool);
+    void rearrangeVehicles();
+    int canOvertake(vehicles,vehicles,int);
     std::vector<vehicles> getSimVehicles();
 
 };
