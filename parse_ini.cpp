@@ -51,11 +51,7 @@ int main(int argc, char**argv) {
 
 	// // glutDisplayFunc(display);
 	//  glutReshapeFunc(reshape);
-    glViewport(71, 0, 640, 480);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-4,32,-10,10);
-    glMatrixMode(GL_MODELVIEW);
+    
 
 	// // glutTimerFunc(0, timer,0);
 	// init();
@@ -186,6 +182,12 @@ int main(int argc, char**argv) {
 						sim_start=true;
 						road r1(road_id,road_length,road_width,road_signal,false);
 						s1.setRoad(r1);
+
+						glViewport(0, 0, ((road_length+2)/32)*640 + 4, ((road_width+1)/10)*320 +4);
+    					glMatrixMode(GL_PROJECTION);
+    					glLoadIdentity();
+    					gluOrtho2D(0,road_length+2,-1*road_width-1,road_width+1);
+    					glMatrixMode(GL_MODELVIEW);
 					}
 			}
 			else
