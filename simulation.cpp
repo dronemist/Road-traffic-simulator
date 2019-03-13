@@ -283,8 +283,14 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
 
         glEnable(GL_BLEND); //Enable blending.
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
-        glColor4f(150.0/255.0, 75.0/256.0, 0.0, 0.3);
+        glColor4f(220.0, 220.0, 220.0, 0.3);
         glRecti(0, 0, sim_road.getLength() , -1*sim_road.getWidth());
+        glColor4f(255, 255, 255, 0.5);
+        for(int stripe_x=0;stripe_x<sim_road.getLength();stripe_x+=4)
+        {
+            glRecti(stripe_x, -1*(sim_road.getWidth() /2) +1, stripe_x+2, (-1*sim_road.getWidth() /2));
+        }
+        
         glDisable(GL_BLEND);
 
         // Displaying different vehicles at different points in time
