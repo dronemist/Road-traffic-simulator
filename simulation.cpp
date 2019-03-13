@@ -70,7 +70,7 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
     {
         for(int i = front.getYcoordinateEnd() + 1; i <= front.getYcoordinateEnd() + back.getWidth(); i++)
         {
-            for(int j = 0; j <= std::min(back.getXcoordinateStart(),sim_road.getLength()-1);j++)
+            for(int j = 0; j <= std::min(front.getXcoordinateEnd(),sim_road.getLength()-1);j++)
             {
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
@@ -90,7 +90,7 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
         
         for(int i = front.getYcoordinateStart() - 1; i >= front.getYcoordinateStart() - back.getWidth(); i--)
         {
-            for(int j = 0; j <= std::min(back.getXcoordinateStart(),sim_road.getLength()-1);j++)
+            for(int j = 0; j <= std::min(front.getXcoordinateEnd(),sim_road.getLength()-1);j++)
             {
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
