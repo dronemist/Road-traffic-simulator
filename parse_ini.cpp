@@ -38,6 +38,9 @@ int main(int argc, char**argv) {
         return -1;
     }
 
+    glClearDepth(1);
+glEnable(GL_DEPTH_TEST);
+
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
@@ -186,7 +189,7 @@ int main(int argc, char**argv) {
 						glViewport(0, 0, ((road_length+2)/32)*640 + 4, ((road_width+1)/10)*320 +4);
     					glMatrixMode(GL_PROJECTION);
     					glLoadIdentity();
-    					gluOrtho2D(0,road_length+2,-1*road_width-1,road_width+1);
+    					gluOrtho2D(0,road_length+2,(-1*road_width-1) - (road_width/2) - 1,(road_width+1)/2);
     					glMatrixMode(GL_MODELVIEW);
 					}
 			}
