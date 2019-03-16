@@ -192,6 +192,7 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
     }
     if(flag == 1)
     {
+        // std::cout<<'\a';
         upFront = up_front_vector.at(0);
         int temp = canOvertake(sim_vehicles.at(index),upFront,index);
         for(int i = 0;i < up_front_vector.size();i++)
