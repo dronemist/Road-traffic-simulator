@@ -21,13 +21,15 @@ public:
     void deleteVehicle(int);
     bool canBeAdded(vehicles);
     void setZero(int);
-    void positionVehicle(int);
+    void positionVehicle(int,std::vector<std::vector<int>>);
     void printMap();
     void updateXcoordinates();
-    void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int, GLFWwindow* window,int=-1);
+    void runSimulation(std::vector<vehicles> &,std::vector<int> &,bool,int,GLFWwindow* window,int=-1);
     void setSignal(bool);
     void rearrangeVehicles();
     int canOvertake(vehicles,vehicles,int);
+    bool checkRight(std::vector<std::vector<int>>,int,int);
+    bool checkLeft(std::vector<std::vector<int>>,int,int);
     std::vector<vehicles> getSimVehicles();
 
 };
