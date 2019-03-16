@@ -208,11 +208,20 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
         sim_vehicles.at(index).setXcoordinate(upFront.getXcoordinateEnd() - 1);
         sim_vehicles.at(index).setCurrSpeed(std::min(upFront.getCurrSpeed(),sim_vehicles.at(index).getCurrSpeed()));
         if (temp >= 1 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1))
-            sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);
+            {
+                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);
+                std::cout<<'\a';
+            }
         if (temp == 2 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1) == false && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
-            sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);    
+            {
+                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);
+                std::cout<<'\a';
+            }    
         if (temp == -1 && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
-            sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() - 1);
+            {
+                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() - 1);
+                std::cout<<'\a';
+            }
     }   
     for(int i=std::max(0,sim_vehicles.at(index).getYcoordinateStart());i <= std::min(sim_road.getWidth()-1,sim_vehicles.at(index).getYcoordinateEnd());i++)
         for(int j=std::max(0,sim_vehicles.at(index).getXcoordinateEnd());j <= std::min(sim_road.getLength()-1,sim_vehicles.at(index).getXcoordinateStart());j++)
