@@ -16,3 +16,9 @@ We have used an `.ini` file similar to config.ini to run our simulation.
 
 ## Running the simulation
 Ensure that you have glfw installed on your system and then run the `make` command on the terminal. An executable by the name of sim will be created, to run the simulation type `./sim` on the terminal 
+
+##Some salient points
+ - The visualization is modeled to look like a real road. The road is grey with white stripes in the middle. Potholes aer maked by the red areas
+ - The traffic signal, which is a square on top of the road. It turns red and green according to the traffic signal
+ - The vehicles can overtake each other, provided that it is physically possible
+ - During overtaking, vehicles blow horns, which is simulated using the system beep '\a'.    
