@@ -10,7 +10,7 @@
 #include <algorithm>
 // defining sec_1 as 10^6 microseconds
 
-const long sec_1 = 1000000;
+const long sec_1 = 500000;
 // void (simulation::*disp)(void) = &simulation::display;
 // void (simulation::*resh)(int,int) = &simulation::reshape;
 
@@ -63,6 +63,7 @@ void simulation::deleteVehicle(int index)
 }
 int simulation::canOvertake(vehicles back,vehicles front,int index)
 {
+    // Function to check if back can overtake front
     int right = 1,left = 1;
     if(front.getYcoordinateEnd() + back.getWidth() >= sim_road.getWidth())
         right = 0;
@@ -135,6 +136,7 @@ void simulation::setZero(int index)
 }
 bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,int x_start)
 {
+    // Function to check if the left of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
     bool temp = true;
     for(int i = std::max(0,x_start - curr.getLength() + 1);i<=std::min(sim_road.getLength()-1,x_start);i++)
@@ -147,6 +149,7 @@ bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,i
 }
 bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,int x_start)
 {
+    // Function to check if the right of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
     bool temp = true;
     for(int i = std::max(0,x_start - curr.getLength() + 1);i <= std::min(sim_road.getLength()-1,x_start);i++)
@@ -177,7 +180,7 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
                 // checking if any of the previous vehicles is in front of the current vehicle
                 if(j <= minimum)
                 {
-                    if(j==minimum)    
+                    if(j == minimum)    
                         up_front_vector.push_back(sim_vehicles.at(sim_map.at(i).at(j)-1));
                     else
                     {
@@ -205,7 +208,7 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
                     break;
                 } 
         }
-        bool q = checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1);
+        // Positioning the vehicle just behind the upFront vehicle
         sim_vehicles.at(index).setXcoordinate(upFront.getXcoordinateEnd() - 1);
         sim_vehicles.at(index).setCurrSpeed(std::min(upFront.getCurrSpeed(),sim_vehicles.at(index).getCurrSpeed()));
         if (temp >= 1 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1))
