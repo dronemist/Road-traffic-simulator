@@ -66,9 +66,12 @@ void simulation::deleteVehicle(int index)
 int simulation::canOvertake(vehicles back,vehicles front,int index)
 {
     // Function to check if back can overtake front
-    int right = 1,left = 1;
+    int right = 0,left = 0;
+    int flag_right = 1,flag_left = 1;
+    int curr_max = front.getXcoordinateEnd() - 1;
+    int right_max = back.getXcoordinateStart(),left_max = back.getXcoordinateStart();
     if(front.getYcoordinateEnd() + back.getWidth() >= sim_road.getWidth())
-        right = 0;
+        right_max = front.getXcoordinateEnd() - 2;
     else
     {
         for(int i = front.getYcoordinateEnd() + 1; i <= front.getYcoordinateEnd() + back.getWidth(); i++)
@@ -78,16 +81,17 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
                     // a vehicle is already present
-                    right = 0;
+                    right_max = j-1;
+                    flag_right = 0;
                     break;
                 }
             }
-            if(right == 0)
+            if(flag_right == 0)
                 break;
         }
     }
     if(front.getYcoordinateStart() - back.getWidth() < 0)
-        left = 0;
+        left_max = front.getXcoordinateEnd() - 2;
     else
     {   
         
@@ -98,13 +102,31 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
                     // a vehicle is already present
-                    left = 0;
+                    left_max = j-1;
+                    flag_left = 0;
                     break;
                 }
             }
-            if(left == 0)
+            if(flag_left == 0)
                 break;
         } 
+    }
+    if(right_max >= left_max && right_max > curr_max && left_max > curr_max)
+    {
+        right = 1;
+        left = 1;
+    }
+    else if (right_max >= left_max && right_max > curr_max ) {
+        right = 1;
+    }
+    else if(left_max > right_max && left_max > curr_max)
+    {
+        left = 1;
+    }
+    else
+    {
+        left = 0;
+        right = 0;
     }
     if(right == 1 && left == 1)
     {
