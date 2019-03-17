@@ -10,9 +10,7 @@
 #include <algorithm>
 // defining sec_1 as 10^6 microseconds
 
-const long sec_1 = 1000000;
-// void (simulation::*disp)(void) = &simulation::display;
-// void (simulation::*resh)(int,int) = &simulation::reshape;
+const long sec_1 = 500000;
 
 bool compare(vehicles v1,vehicles v2)
 {
@@ -43,6 +41,10 @@ void simulation::setRoad(road r)
     sim_map = std::vector<std::vector<int>> 
     (sim_road.getWidth(),std::vector<int> (sim_road.getLength(),0));
     id = r.getId();
+}
+int simulation::getNumberOfVehicles()
+{
+    return sim_vehicles.size();
 }
 void simulation::setVehicles(std::vector<vehicles> &v)
 {
@@ -195,7 +197,6 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
     }
     if(flag == 1)
     {
-        // std::cout<<'\a';
         upFront = up_front_vector.at(0);
         int temp = canOvertake(sim_vehicles.at(index),upFront,index);
         for(int i = 0;i < up_front_vector.size();i++)
@@ -275,6 +276,30 @@ void simulation::updateXcoordinates()
     for(int k=0;k<sim_vehicles.size();k++)    
         sim_vehicles.at(k).updateXcoordinate(sim_road.getSignal()-1,sim_road.getLightSignal());  
 }
+bool simulation::checkEnd(int vehicles_left)
+{
+    // function to check whether to end the simulation or not
+    if(sim_vehicles.size() == 0 && vehicles_left == 0)
+    {
+        return true;
+    }
+    if(sim_road.getLightSignal()==false)
+    {
+        for(int i = 0;i<sim_vehicles.size();i++)
+        {
+            if(sim_vehicles.at(i).getXcoordinateStart() >= sim_road.getSignal()-1)
+                {
+                    return false;
+                }
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
+}
 void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time, GLFWwindow* window,int end_time)
 {
     // run simulation from start_time to end_time
@@ -282,7 +307,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
     //add_time is a vector which signifies the times at which vehicles are added
     int cnt = start_time;
     std::vector<std::vector<int>> sim_map_old;
-    while( cnt <= end_time || (till_end == true && (v.size() > 0 || sim_vehicles.size()>0)))
+    while( cnt <= end_time || (till_end == true && checkEnd(v.size()) == false ))
     { 
         if(v.size() > 0
         && cnt >= add_time.at(0)
@@ -325,7 +350,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         glColor4f(255, 255, 255, 0.5);
         for(int stripe_x=0;stripe_x<sim_road.getLength();stripe_x+=4)
         {
-            glRecti(stripe_x, -1*(sim_road.getWidth() /2) +1, stripe_x+2, (-1*sim_road.getWidth() /2));
+            glRectf(stripe_x, (-1*float(sim_road.getWidth())/2) +1, stripe_x+2, (float(-1*sim_road.getWidth()) /2));
         }
         
         glDisable(GL_BLEND);
@@ -354,7 +379,6 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 g=1.0;
             else
                 g=0.0;
-            // std::cout<<"x_start,x_end,y_start,y_end, color are "<<dum_x<<", "<<dum_x_end<<", "<<dum_y<<", "<<dum_y_end<<", "<<dum_col<<"\n";
             glColor3f(r, g, b);
             glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
                

@@ -17,6 +17,7 @@ public:
     simulation();
     void setRoad(road);
     void setVehicles(std::vector<vehicles>&);
+    int getNumberOfVehicles();
     void addVehicle(vehicles);
     void deleteVehicle(int);
     bool canBeAdded(vehicles);
@@ -30,6 +31,7 @@ public:
     int canOvertake(vehicles,vehicles,int);
     bool checkRight(std::vector<std::vector<int>>,int,int);
     bool checkLeft(std::vector<std::vector<int>>,int,int);
+    bool checkEnd(int);
     std::vector<vehicles> getSimVehicles();
 
 };
