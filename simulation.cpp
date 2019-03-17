@@ -10,7 +10,7 @@
 #include <algorithm>
 // defining sec_1 as 10^6 microseconds
 
-const long sec_1 = 500000;
+const long sec_1 = 1000000;
 // void (simulation::*disp)(void) = &simulation::display;
 // void (simulation::*resh)(int,int) = &simulation::reshape;
 
