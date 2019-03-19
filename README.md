@@ -16,7 +16,7 @@ We have also added overtaking in our code. Overtaking takes place only if the ad
 We have used an `.ini` file similar to config.ini to run our simulation.
 
 ## Running the simulation
-Ensure that you have glfw installed on your system and then run the `make` command on the terminal. An executable by the name of sim will be created, to run the simulation type `./sim` on the terminal 
+Ensure that you have glfw installed on your system and then run the `make` command on the terminal. An executable by the name of sim will be created, to run the simulation type `./sim [ini filename]` on the terminal 
 
 ## Some salient points
  - The visualization is modeled to look like a real road. The road is grey with white stripes in the middle.
