@@ -32,6 +32,7 @@ public:
     bool checkRight(std::vector<std::vector<int>>,int,int);
     bool checkLeft(std::vector<std::vector<int>>,int,int);
     bool checkEnd(int);
+    bool checkIfVehiclePresent(int x,int y,int index);
     std::vector<vehicles> getSimVehicles();
 
 };

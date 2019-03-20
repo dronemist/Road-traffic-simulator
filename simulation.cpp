@@ -158,6 +158,16 @@ void simulation::setZero(int index)
         }
     }
 }
+bool simulation::checkIfVehiclePresent(int x,int y,int index)
+{
+    for (int i=index+1;i<sim_vehicles.size();i++)
+    {
+        if(sim_vehicles.at(i).getYcoordinateStart() > y || sim_vehicles.at(i).getYcoordinateEnd() < y);
+        else if(sim_vehicles.at(i).getXcoordinateStart() < x || sim_vehicles.at(i).getXcoordinateEnd() > x);
+        else return true;    
+    }
+    return false;
+}
 bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,int x_start)
 {
     // Function to check if the left of current vehicle is free
@@ -166,7 +176,7 @@ bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,i
     for(int i = std::max(0,x_start - curr.getLength() + 1);i<=std::min(sim_road.getLength()-1,x_start);i++)
     {
         // if left is free
-        if((curr.getYcoordinateStart()-1) >=0 && sim_map_old.at(curr.getYcoordinateStart()-1).at(i) > index + 1)
+        if((curr.getYcoordinateStart()-1) >=0 && checkIfVehiclePresent(i,curr.getYcoordinateStart()-1,index))
             temp = false;
     }
     return temp;
@@ -176,10 +186,10 @@ bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,
     // Function to check if the right of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
     bool temp = true;
-    for(int i = std::max(0,x_start - curr.getLength() + 1);i <= std::min(sim_road.getLength()-1,x_start);i++)
+    for(int i = std::max(0,x_start - curr.getLength() );i <= std::min(sim_road.getLength()-1,x_start);i++)
     {
         // If right is free
-        if((curr.getYcoordinateEnd()+1 < sim_road.getWidth()) && sim_map_old.at(curr.getYcoordinateEnd()+1).at(i) > index + 1)
+        if((curr.getYcoordinateEnd()+1 < sim_road.getWidth()) && checkIfVehiclePresent(i,curr.getYcoordinateEnd()+1,index))
             {
                 temp = false;
                 break;
@@ -322,7 +332,7 @@ bool simulation::checkEnd(int vehicles_left)
     }
     
 }
-void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time, GLFWwindow* window,int end_time)
+void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_time,bool till_end,int start_time,GLFWwindow* window,int end_time)
 {
     // run simulation from start_time to end_time
     // v represents the vector of vehicles to be added, added one per second
@@ -388,7 +398,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 float y_coordinate_increase = float(v1.getYcoordinateStart() -  v1.getYcoordinateStartOld())/number_of_steps;
                 float dum_x = (v1.getXcoordinateStartOld() + x_coordinate_increase*q);
                 float dum_y = -1*(v1.getYcoordinateStartOld() + y_coordinate_increase*q)-0.1;
-                float dum_x_end = (dum_x - v1.getLength() + 1);
+                float dum_x_end = (dum_x - v1.getLength() + 0.3);
                 float dum_y_end = (dum_y - v1.getWidth())+0.1;
                 std::string dum_col = v1.getColour();
                 float r=0.0,g=0.0,b = 0.0;
@@ -438,22 +448,24 @@ std::vector<vehicles> simulation::getSimVehicles()
 }
 // int main(int argc, char const *argv[])
 // {
-//     road r1(1,50,5,30,false);
+//     road r1(1,100,10,40,false);
 //     std::vector<vehicles> v;
 //     std::vector<int> t;
 //     t.push_back(1);
 //     t.push_back(2);
 //     t.push_back(3);
-//     t.push_back(3);
-//     t.push_back(3);
+//     t.push_back(4);
+//     t.push_back(5);
+//     t.push_back(6);
 //     simulation s(r1,v);
-//     vehicles v2("Truck","",2,2,0,3,1,1);
-//     vehicles v1("Car","",2,3,0,0,1,1);
-//     vehicles v3("bike","",1,1,0,3,3,1);
+//     vehicles v2("Bruck","",3,2,0,0,2,1);
+//     vehicles v1("Car","",2,2,0,0,3,2);
+//     vehicles v3("bike","",3,1,0,3,2,1.5);
 //     v.push_back(v1);
+//     v.push_back(v3);
+//     v.push_back(v3);
 //     v.push_back(v2);
-//     v.push_back(v3);
-//     v.push_back(v3);
+//     v.push_back(v1);
 //     v.push_back(v3);
 //     s.runSimulation(v,t,false,0,40);
 //     v3.setYcoordinate(3);
