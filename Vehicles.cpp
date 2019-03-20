@@ -19,6 +19,8 @@ vehicles::vehicles(std::string type,std::string colour, int length, int width, i
     vehicle_curr_speed = curr_speed;
     vehicle_def_speed = curr_speed;
     x_coordinate_start = x;
+    x_coordinate_start_old = x;
+    y_coordinate_start_old = y;
     x_coordinate_end = x_coordinate_start - vehicle_length + 1;
     y_coordinate_start = y;
     y_coordinate_end = y_coordinate_start + vehicle_width - 1;

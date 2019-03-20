@@ -11,7 +11,7 @@
 // defining sec_1 as 10^6 microseconds
 
 const long sec_1 = 1000000;
-const int number_of_steps = 5;// number of steps into which a second is broken into
+const int number_of_steps = 50;// number of steps into which a second is broken into
 
 bool compare(vehicles v1,vehicles v2)
 {
@@ -389,7 +389,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 float dum_x = (v1.getXcoordinateStartOld() + x_coordinate_increase*q);
                 float dum_y = -1*(v1.getYcoordinateStartOld() + y_coordinate_increase*q)-0.1;
                 float dum_x_end = (dum_x - v1.getLength() + 1);
-                float dum_y_end = -1*(dum_y + v1.getWidth())+0.1;
+                float dum_y_end = (dum_y - v1.getWidth())+0.1;
                 std::string dum_col = v1.getColour();
                 float r=0.0,g=0.0,b = 0.0;
                 if(dum_col == "RED")
