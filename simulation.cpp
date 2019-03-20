@@ -162,8 +162,8 @@ bool simulation::checkIfVehiclePresent(int x,int y,int index)
 {
     for (int i=index+1;i<sim_vehicles.size();i++)
     {
-        if(sim_vehicles.at(i).getYcoordinateStart() > y || sim_vehicles.at(i).getYcoordinateEnd() < y);
-        else if(sim_vehicles.at(i).getXcoordinateStart() < x || sim_vehicles.at(i).getXcoordinateEnd() > x);
+        if(sim_vehicles.at(i).getYcoordinateStartOld() > y || sim_vehicles.at(i).getYcoordinateStartOld() + sim_vehicles.at(i).getWidth()-1 < y);
+        else if(sim_vehicles.at(i).getXcoordinateStartOld() < x || sim_vehicles.at(i).getXcoordinateStartOld() - sim_vehicles.at(i).getLength()+1 > x);
         else return true;    
     }
     return false;
@@ -186,7 +186,7 @@ bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,
     // Function to check if the right of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
     bool temp = true;
-    for(int i = std::max(0,x_start - curr.getLength() );i <= std::min(sim_road.getLength()-1,x_start);i++)
+    for(int i = std::max(0,x_start - curr.getLength() + 1);i <= std::min(sim_road.getLength()-1,x_start);i++)
     {
         // If right is free
         if((curr.getYcoordinateEnd()+1 < sim_road.getWidth()) && checkIfVehiclePresent(i,curr.getYcoordinateEnd()+1,index))
