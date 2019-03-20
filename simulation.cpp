@@ -10,7 +10,8 @@
 #include <algorithm>
 // defining sec_1 as 10^6 microseconds
 
-const long sec_1 = 500000;
+const long sec_1 = 1000000;
+const int number_of_steps = 5;// number of steps into which a second is broken into
 
 bool compare(vehicles v1,vehicles v2)
 {
@@ -94,7 +95,6 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
         left_max = front.getXcoordinateEnd() - 2;
     else
     {   
-        
         for(int i = front.getYcoordinateStart() - 1; i >= front.getYcoordinateStart() - back.getWidth(); i--)
         {
             for(int j = 0; j <= std::min(back.getXcoordinateStart(),sim_road.getLength()-1);j++)
@@ -241,7 +241,7 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
             }
         if (temp == 2 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1) == false && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
             {
-                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);
+                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() - 1);
                 std::cout<<'\a';
             }    
         if (temp == -1 && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
@@ -348,71 +348,74 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         // Printing to terminal
         std::cout<<"Time: "<<cnt<<std::endl;
         printMap();
-
-        /* Render here */
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glLoadIdentity();
-        vehicles v1;
-        int sig_pos;
-        float sig_col_r,sig_col_g;
-        // displaying the traffic signal
-        sig_pos = sim_road.getSignal();
-            if(!sim_road.getLightSignal())
-                {sig_col_r = 1.0;sig_col_g=0;}
-            else
-                {sig_col_r=0.0;sig_col_g=1;}
-        glColor3f(sig_col_r,sig_col_g,0);
-        glRecti(sig_pos-1, 1, sig_pos, 0);
-
-        glEnable(GL_BLEND); //Enable blending.
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
-        glColor4f(220.0, 220.0, 220.0, 0.3);
-        glRecti(0, 0, sim_road.getLength() , -1*sim_road.getWidth());
-        glColor4f(255, 255, 255, 0.5);
-        for(int stripe_x=0;stripe_x<sim_road.getLength();stripe_x+=4)
+        for(int q = 0; q<number_of_steps;q++)
         {
-            glRectf(stripe_x, (-1*float(sim_road.getWidth())/2) +1, stripe_x+2, (float(-1*sim_road.getWidth()) /2));
-        }
-        
-        glDisable(GL_BLEND);
-
-        // Displaying different vehicles at different points in time
-        for(int i=0;i<sim_vehicles.size();i++)
-        {
-    
-            v1 = sim_vehicles.at(i);
+            /* Render here */
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            float dum_x = v1.getXcoordinateStart();
-            float dum_y = -1*v1.getYcoordinateStart()-0.1;
-            float dum_x_end = v1.getXcoordinateEnd();
-            float dum_y_end = -1*v1.getYcoordinateEnd()-1+0.1;
-            std::string dum_col = v1.getColour();
-            float r=0.0,g=0.0,b = 0.0;
-            if(dum_col == "RED")
-                r=1.0;
-            else
-                r=0.0;
-            if(dum_col == "BLUE")
-                b=1.0;
-            else
-                b=0.0;
-            if(dum_col == "GREEN")
-                g=1.0;
-            else
-                g=0.0;
-            glColor3f(r, g, b);
-            glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
-               
+            glClear(GL_COLOR_BUFFER_BIT);
+            glLoadIdentity();
+            vehicles v1;
+            int sig_pos;
+            float sig_col_r,sig_col_g;
+            // displaying the traffic signal
+            sig_pos = sim_road.getSignal();
+                if(!sim_road.getLightSignal())
+                    {sig_col_r = 1.0;sig_col_g=0;}
+                else
+                    {sig_col_r=0.0;sig_col_g=1;}
+            glColor3f(sig_col_r,sig_col_g,0);
+            glRecti(sig_pos-1, 1, sig_pos, 0);
+
+            glEnable(GL_BLEND); //Enable blending.
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
+            glColor4f(220.0, 220.0, 220.0, 0.3);
+            glRecti(0, 0, sim_road.getLength() , -1*sim_road.getWidth());
+            glColor4f(255, 255, 255, 0.5);
+            for(int stripe_x=0;stripe_x<sim_road.getLength();stripe_x+=4)
+            {
+                glRectf(stripe_x, (-1*float(sim_road.getWidth())/2) +1, stripe_x+2, (float(-1*sim_road.getWidth()) /2));
+            }
+            
+            glDisable(GL_BLEND);
+
+            // Displaying different vehicles at different points in time
+            for(int i=0;i<sim_vehicles.size();i++)
+            {
+        
+                v1 = sim_vehicles.at(i);
+                glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+                float x_coordinate_increase = float(v1.getXcoordinateStart() -  v1.getXcoordinateStartOld())/number_of_steps;
+                float y_coordinate_increase = float(v1.getYcoordinateStart() -  v1.getYcoordinateStartOld())/number_of_steps;
+                float dum_x = (v1.getXcoordinateStartOld() + x_coordinate_increase*q);
+                float dum_y = -1*(v1.getYcoordinateStartOld() + y_coordinate_increase*q)-0.1;
+                float dum_x_end = (dum_x - v1.getLength() + 1);
+                float dum_y_end = -1*(dum_y + v1.getWidth())+0.1;
+                std::string dum_col = v1.getColour();
+                float r=0.0,g=0.0,b = 0.0;
+                if(dum_col == "RED")
+                    r=1.0;
+                else
+                    r=0.0;
+                if(dum_col == "BLUE")
+                    b=1.0;
+                else
+                    b=0.0;
+                if(dum_col == "GREEN")
+                    g=1.0;
+                else
+                    g=0.0;
+                glColor3f(r, g, b);
+                glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
+                
+            }
+            //glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
+            /* Swap front and back buffers */
+            glfwSwapBuffers(window);
+
+            /* Poll for and process events */
+            glfwPollEvents();
+            usleep(sec_1/number_of_steps);
         }
-        //glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-
-
         // Removing vehicles that have left the road
         for(int k = 0;k < sim_vehicles.size();k++)
         {    
@@ -426,7 +429,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         cnt++;
         rearrangeVehicles();
         updateXcoordinates(); 
-        usleep(sec_1);
+        // usleep(sec_1);
     }
 }
 std::vector<vehicles> simulation::getSimVehicles()
@@ -441,12 +444,16 @@ std::vector<vehicles> simulation::getSimVehicles()
 //     t.push_back(1);
 //     t.push_back(2);
 //     t.push_back(3);
+//     t.push_back(3);
+//     t.push_back(3);
 //     simulation s(r1,v);
-//     vehicles v2("Truck","",4,2,0,1,3,2);
+//     vehicles v2("Truck","",2,2,0,3,1,1);
 //     vehicles v1("Car","",2,3,0,0,1,1);
 //     vehicles v3("bike","",1,1,0,3,3,1);
 //     v.push_back(v1);
 //     v.push_back(v2);
+//     v.push_back(v3);
+//     v.push_back(v3);
 //     v.push_back(v3);
 //     s.runSimulation(v,t,false,0,40);
 //     v3.setYcoordinate(3);

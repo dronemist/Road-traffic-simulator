@@ -43,13 +43,19 @@ int vehicles::getXcoordinateStart()
 {
     return x_coordinate_start;
 }
-
+int vehicles::getXcoordinateStartOld()
+{
+    return x_coordinate_start_old;
+}
+int vehicles::getYcoordinateStartOld()
+{
+    return y_coordinate_start_old;
+}
 //returns the upper y coordinate of the vehicle
 int vehicles::getYcoordinateStart()
 {
     return y_coordinate_start;
 }
-
 //returns the X coordinate of the back of the vehicle
 int vehicles::getXcoordinateEnd()
 {
@@ -82,6 +88,8 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         signal: the x_coordinate of the signal
         colour_of_signal: the colour of signal
     */
+    x_coordinate_start_old = x_coordinate_start;
+    y_coordinate_start_old = y_coordinate_start;
     if(vehicle_curr_speed == vehicle_max_speed)
         is_accelerating = false;
     else
