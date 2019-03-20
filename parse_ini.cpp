@@ -31,18 +31,7 @@ int main(int argc, char const *argv[]) {
         {cout<<"Could not initialize library ";return -1;}
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Indian Road", NULL, NULL);
-    if (!window)
-    {
-        {cout<<"Could not make window ";glfwTerminate();}
-        return -1;
-    }
-
-    glClearDepth(1);
-glEnable(GL_DEPTH_TEST);
-
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+    
 
 	// glutInit(&argc, argv);
 	// glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
@@ -182,6 +171,20 @@ glEnable(GL_DEPTH_TEST);
 
 				else if(words.at(0)=="START")
 					{
+
+						window = glfwCreateWindow((road_length)*21, road_width*40, "Indian Road", NULL, NULL);
+    					if (!window)
+    					{
+        					{cout<<"Could not make window ";glfwTerminate();}
+        					return -1;
+    					}
+
+    					glClearDepth(1);
+						glEnable(GL_DEPTH_TEST);
+
+					    /* Make the window's context current */
+					    glfwMakeContextCurrent(window);
+
 						sim_start=true;
 						road r1(road_id,road_length,road_width,road_signal,false);
 						s1.setRoad(r1);
