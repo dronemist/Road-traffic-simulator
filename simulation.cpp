@@ -398,7 +398,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 float y_coordinate_increase = float(v1.getYcoordinateStart() -  v1.getYcoordinateStartOld())/number_of_steps;
                 float dum_x = (v1.getXcoordinateStartOld() + x_coordinate_increase*q);
                 float dum_y = -1*(v1.getYcoordinateStartOld() + y_coordinate_increase*q)-0.1;
-                float dum_x_end = (dum_x - v1.getLength() + 0.3);
+                float dum_x_end = (dum_x - v1.getLength() + 0.5);
                 float dum_y_end = (dum_y - v1.getWidth())+0.1;
                 std::string dum_col = v1.getColour();
                 float r=0.0,g=0.0,b = 0.0;
