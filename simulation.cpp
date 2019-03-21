@@ -374,7 +374,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 else
                     {sig_col_r=0.0;sig_col_g=1;}
             glColor3f(sig_col_r,sig_col_g,0);
-            glRecti(sig_pos-1, 1, sig_pos, 0);
+            glRecti(sig_pos-2, 1, sig_pos-1, 0);
 
             glEnable(GL_BLEND); //Enable blending.
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
