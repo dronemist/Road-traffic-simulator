@@ -162,8 +162,8 @@ bool simulation::checkIfVehiclePresent(int x,int y,int index)
 {
     for (int i=index+1;i<sim_vehicles.size();i++)
     {
-        if(sim_vehicles.at(i).getYcoordinateStart() > y || sim_vehicles.at(i).getYcoordinateEnd() < y);
-        else if(sim_vehicles.at(i).getXcoordinateStart() < x || sim_vehicles.at(i).getXcoordinateEnd() > x);
+        if(sim_vehicles.at(i).getYcoordinateStartOld() > y || sim_vehicles.at(i).getYcoordinateStartOld() + sim_vehicles.at(i).getWidth()-1 < y);
+        else if(sim_vehicles.at(i).getXcoordinateStartOld() < x || sim_vehicles.at(i).getXcoordinateStartOld() - sim_vehicles.at(i).getLength()+1 > x);
         else return true;    
     }
     return false;
@@ -186,7 +186,7 @@ bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,
     // Function to check if the right of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
     bool temp = true;
-    for(int i = std::max(0,x_start - curr.getLength() );i <= std::min(sim_road.getLength()-1,x_start);i++)
+    for(int i = std::max(0,x_start - curr.getLength() + 1);i <= std::min(sim_road.getLength()-1,x_start);i++)
     {
         // If right is free
         if((curr.getYcoordinateEnd()+1 < sim_road.getWidth()) && checkIfVehiclePresent(i,curr.getYcoordinateEnd()+1,index))
@@ -374,7 +374,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 else
                     {sig_col_r=0.0;sig_col_g=1;}
             glColor3f(sig_col_r,sig_col_g,0);
-            glRecti(sig_pos-1, 1, sig_pos, 0);
+            glRecti(sig_pos-2, 1, sig_pos-1, 0);
 
             glEnable(GL_BLEND); //Enable blending.
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
@@ -398,7 +398,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 float y_coordinate_increase = float(v1.getYcoordinateStart() -  v1.getYcoordinateStartOld())/number_of_steps;
                 float dum_x = (v1.getXcoordinateStartOld() + x_coordinate_increase*q);
                 float dum_y = -1*(v1.getYcoordinateStartOld() + y_coordinate_increase*q)-0.1;
-                float dum_x_end = (dum_x - v1.getLength() + 0.3);
+                float dum_x_end = (dum_x - v1.getLength() + 0.5);
                 float dum_y_end = (dum_y - v1.getWidth())+0.1;
                 std::string dum_col = v1.getColour();
                 float r=0.0,g=0.0,b = 0.0;
