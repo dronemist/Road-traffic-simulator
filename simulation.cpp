@@ -416,6 +416,8 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                     g=0.0;
                 glColor3f(r, g, b);
                 glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
+                glColor3f(1.0, 1.0, 0.0);
+                glRectf(dum_x, dum_y+0.2-(v1.getWidth())/2.0, dum_x-0.2, dum_y-0.2-(v1.getWidth())/2.0);
                 
             }
             //glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
