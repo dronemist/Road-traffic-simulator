@@ -15,7 +15,7 @@ vehicles::vehicles(std::string type,std::string colour, int length, int width, i
     if(type == "bike")
         lane_change_probability = 0.5;
     else if(type == "Car")
-        lane_change_probability = 0.2;
+        lane_change_probability = 0.1;
     else if(type == "AutoRickshaw")
         lane_change_probability = 0.3;
     else if(type == "Bus")
