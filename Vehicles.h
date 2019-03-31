@@ -7,6 +7,8 @@ protected:
     std::string vehicle_type;
     std::string vehicle_colour;
     int vehicle_length;
+    float lane_change_probability;// probability for lane change
+    int last_move;// 0 for straight,1 for right -1, for left
     int vehicle_width;
     int x_coordinate_start; // starting x_coordinate
     int x_coordinate_start_old;
@@ -37,10 +39,13 @@ public:
  float getMaxAcceleration();
  float getMaxDeceleration();
  std::string getColour();
+ void setLastMove(int move);
+ int getLastMove();
  bool getIsAccelerating();
  void updateXcoordinate(int, bool);
  void setYcoordinate(int);
  void setXcoordinate(int);
  void setCurrSpeed(int);
+ float getLaneChangeProb();
 };
 #endif

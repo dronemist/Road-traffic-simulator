@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 #include <unistd.h>
 #include <cmath>
@@ -71,7 +73,7 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
     int flag_right = 1,flag_left = 1;
     int curr_max = front.getXcoordinateEnd() - 1;
     int right_max = back.getXcoordinateStart(),left_max = back.getXcoordinateStart();
-    if(front.getYcoordinateEnd() + back.getWidth() >= sim_road.getWidth())
+    if(front.getYcoordinateEnd() + back.getWidth() >= sim_road.getWidth() || checkRight(index,front.getXcoordinateEnd()-1)==false)
         right_max = front.getXcoordinateEnd() - 2;
     else
     {
@@ -82,16 +84,15 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
                     // a vehicle is already present
-                    right_max = j-1;
-                    flag_right = 0;
-                    break;
+                    if(j-1 < right_max)
+                    {
+                        right_max = j-1;
+                    }
                 }
             }
-            if(flag_right == 0)
-                break;
         }
     }
-    if(front.getYcoordinateStart() - back.getWidth() < 0)
+    if(front.getYcoordinateStart() - back.getWidth() < 0 || checkLeft(index,front.getXcoordinateEnd()-1)==false)
         left_max = front.getXcoordinateEnd() - 2;
     else
     {   
@@ -102,26 +103,37 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
                 if(sim_map.at(i).at(j) < index+1 && sim_map.at(i).at(j) > 0)
                 {
                     // a vehicle is already present
-                    left_max = j-1;
-                    flag_left = 0;
-                    break;
+                    if(j-1 < left_max)
+                        left_max = j-1;
                 }
             }
-            if(flag_left == 0)
-                break;
         } 
     }
-    if(right_max >= left_max && right_max > curr_max && left_max > curr_max)
+    float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    if(right_max == left_max && right_max >= curr_max)
     {
-        right = 1;
-        left = 1;
+      if(right_max > curr_max||r < back.getLaneChangeProb())  
+        {
+            if(back.getLastMove()==1)
+                right = 1;
+            else if(back.getLastMove()==-1)
+                left = 1;
+            else
+            {
+                left=1;
+                right=1;
+            }
+        }
     }
-    else if (right_max >= left_max && right_max > curr_max ) {
-        right = 1;
-    }
-    else if(left_max > right_max && left_max > curr_max)
+    else if (right_max > left_max && right_max >= curr_max ) 
     {
-        left = 1;
+        if(right_max > curr_max || r < back.getLaneChangeProb())    
+            right = 1;
+    }
+    else if(left_max > right_max && left_max >= curr_max)
+    {
+        if(left_max > curr_max || r < back.getLaneChangeProb())
+            left = 1;
     }
     else
     {
@@ -129,7 +141,7 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
         right = 0;
     }
     if(right == 1 && left == 1)
-    {
+    { 
         return 2;
     }
     else if(right == 1)
@@ -160,6 +172,12 @@ void simulation::setZero(int index)
 }
 bool simulation::checkIfVehiclePresent(int x,int y,int index)
 {
+    for (int i=0;i<index;i++)
+    {
+        if(sim_vehicles.at(i).getYcoordinateStart() > y || sim_vehicles.at(i).getYcoordinateEnd() < y);
+        else if(sim_vehicles.at(i).getXcoordinateStart() < x || sim_vehicles.at(i).getXcoordinateEnd() > x);
+        else return true;    
+    }
     for (int i=index+1;i<sim_vehicles.size();i++)
     {
         if(sim_vehicles.at(i).getYcoordinateStartOld() > y || sim_vehicles.at(i).getYcoordinateStartOld() + sim_vehicles.at(i).getWidth()-1 < y);
@@ -168,7 +186,7 @@ bool simulation::checkIfVehiclePresent(int x,int y,int index)
     }
     return false;
 }
-bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,int x_start)
+bool simulation::checkLeft(int index,int x_start)
 {
     // Function to check if the left of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
@@ -181,7 +199,7 @@ bool simulation::checkLeft(std::vector<std::vector<int>> sim_map_old,int index,i
     }
     return temp;
 }
-bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,int x_start)
+bool simulation::checkRight(int index,int x_start)
 {
     // Function to check if the right of current vehicle is free
     vehicles curr = sim_vehicles.at(index);
@@ -197,7 +215,7 @@ bool simulation::checkRight(std::vector<std::vector<int>> sim_map_old,int index,
     }
     return temp;
 }
-void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map_old)
+void simulation::positionVehicle(int index)
 {
     // Function to position the vehicle at index on the sim_map
     int minimum = sim_vehicles.at(index).getXcoordinateStart();
@@ -244,20 +262,18 @@ void simulation::positionVehicle(int index,std::vector<std::vector<int>> sim_map
         // Positioning the vehicle just behind the upFront vehicle
         sim_vehicles.at(index).setXcoordinate(upFront.getXcoordinateEnd() - 1);
         sim_vehicles.at(index).setCurrSpeed(std::min(upFront.getCurrSpeed(),sim_vehicles.at(index).getCurrSpeed()));
-        if (temp >= 1 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1))
+        sim_vehicles.at(index).setLastMove(0);
+        if (temp >= 1)
             {
                 sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() + 1);
+                sim_vehicles.at(index).setLastMove(1);
                 std::cout<<'\a';
             }
-        if (temp == 2 && checkRight(sim_map_old,index,upFront.getXcoordinateEnd()-1) == false && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
+        if (temp == -1)
             {
                 sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() - 1);
                 std::cout<<'\a';
-            }    
-        if (temp == -1 && checkLeft(sim_map_old,index,upFront.getXcoordinateEnd()-1))
-            {
-                sim_vehicles.at(index).setYcoordinate(sim_vehicles.at(index).getYcoordinateStart() - 1);
-                std::cout<<'\a';
+                sim_vehicles.at(index).setLastMove(-1);
             }
     }   
     for(int i=std::max(0,sim_vehicles.at(index).getYcoordinateStart());i <= std::min(sim_road.getWidth()-1,sim_vehicles.at(index).getYcoordinateEnd());i++)
@@ -338,7 +354,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
     // v represents the vector of vehicles to be added, added one per second
     //add_time is a vector which signifies the times at which vehicles are added
     int cnt = start_time;
-    std::vector<std::vector<int>> sim_map_old;
+    srand (static_cast <unsigned> (time(0)));
     while( cnt <= end_time || (till_end == true && checkEnd(v.size()) == false ))
     { 
         if(v.size() > 0
@@ -349,11 +365,10 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
             v.erase(v.begin());
             add_time.erase(add_time.begin());
         }
-        sim_map_old = sim_map;
         for(int k = 0;k < sim_vehicles.size();k++)
         {
             setZero(k);
-            positionVehicle(k,sim_map_old);
+            positionVehicle(k);
         }
         // Printing to terminal
         std::cout<<"Time: "<<cnt<<std::endl;

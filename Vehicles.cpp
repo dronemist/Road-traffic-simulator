@@ -12,6 +12,17 @@ vehicles::vehicles(std::string type,std::string colour, int length, int width, i
         is_accelerating = true;
     curr_speed = std::min(curr_speed,max_speed);
     vehicle_type = type;
+    if(type == "bike")
+        lane_change_probability = 0.5;
+    else if(type == "Car")
+        lane_change_probability = 0.2;
+    else if(type == "AutoRickshaw")
+        lane_change_probability = 0.3;
+    else if(type == "Bus")
+        lane_change_probability = 0.05;
+    else if(type == "Truck")
+        lane_change_probability = 0;                
+    last_move = 0;
     vehicle_colour = colour;
     vehicle_length = length;
     vehicle_width = width;
@@ -120,10 +131,10 @@ void vehicles::updateXcoordinate(int signal,bool colour_of_signal)
         if(is_accelerating)
         {
             if(vehicle_max_speed < vehicle_curr_speed + vehicle_max_acceleration)
-            x_coordinate_start = std::min(int(floor(x_coordinate_start+
+                x_coordinate_start = std::min(int(floor(x_coordinate_start+
                                     vehicle_curr_speed + (0.5)*float(vehicle_max_speed - vehicle_curr_speed))),signal-1);
             else                        
-            x_coordinate_start = std::min(int(floor(x_coordinate_start+
+                x_coordinate_start = std::min(int(floor(x_coordinate_start+
                                     vehicle_curr_speed + (0.5)*float(vehicle_max_acceleration))),signal-1);
             vehicle_curr_speed += vehicle_max_acceleration;
             vehicle_curr_speed = std::min(vehicle_curr_speed,vehicle_max_speed);
@@ -183,4 +194,16 @@ float vehicles::getMaxDeceleration()
 std::string vehicles::getColour()
 {
     return vehicle_colour;
+}
+void vehicles::setLastMove(int move)
+{
+    last_move = move;
+}
+int vehicles::getLastMove()
+{
+    return last_move;
+}
+float vehicles::getLaneChangeProb()
+{
+    return lane_change_probability;
 }
