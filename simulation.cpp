@@ -403,17 +403,19 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
                 std::string dum_col = v1.getColour();
                 float r=0.0,g=0.0,b = 0.0;
                 if(dum_col == "RED")
-                    r=1.0;
+                    {r=1.0;g=0.0;b=0.0;}
+                else if(dum_col == "BLUE")
+                    {b=1.0;r=0.0;g=0.0;}
+                else if(dum_col == "GREEN")
+                    {r=0.0;b=0.0;g=1.0;}
+                else if(dum_col == "ORANGE")
+                    {g=0.64;r=1.0;b=0.0;}
+                else if(dum_col == "MAGENTA")
+                    {r=1.0;g=0.0;b=1.0;}
+                else if(dum_col == "CYAN")
+                    {r=0.0;g=1.0;b=1.0;}
                 else
-                    r=0.0;
-                if(dum_col == "BLUE")
-                    b=1.0;
-                else
-                    b=0.0;
-                if(dum_col == "GREEN")
-                    g=1.0;
-                else
-                    g=0.0;
+                    {r=0.0;g=0.0;b=0.0;}
                 glColor3f(r, g, b);
                 glRectf(dum_x, dum_y, dum_x_end, dum_y_end);
                 glColor3f(1.0, 1.0, 0.0);
