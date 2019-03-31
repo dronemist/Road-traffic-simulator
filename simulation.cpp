@@ -109,6 +109,7 @@ int simulation::canOvertake(vehicles back,vehicles front,int index)
             }
         } 
     }
+    // added a lane change probability for bikes in case it doesn't benefit from 
     float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     if(right_max == left_max && right_max >= curr_max)
     {
@@ -373,6 +374,7 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         // Printing to terminal
         std::cout<<"Time: "<<cnt<<std::endl;
         printMap();
+        // to make the simulation continuous
         for(int q = 0; q<number_of_steps;q++)
         {
             /* Render here */
@@ -458,42 +460,10 @@ void simulation::runSimulation(std::vector<vehicles> &v,std::vector<int> &add_ti
         cnt++;
         rearrangeVehicles();
         updateXcoordinates(); 
-        // usleep(sec_1);
     }
 }
 std::vector<vehicles> simulation::getSimVehicles()
 {
     return sim_vehicles;
 }
-// int main(int argc, char const *argv[])
-// {
-//     road r1(1,100,10,40,false);
-//     std::vector<vehicles> v;
-//     std::vector<int> t;
-//     t.push_back(1);
-//     t.push_back(2);
-//     t.push_back(3);
-//     t.push_back(4);
-//     t.push_back(5);
-//     t.push_back(6);
-//     simulation s(r1,v);
-//     vehicles v2("Bruck","",3,2,0,0,2,1);
-//     vehicles v1("Car","",2,2,0,0,3,2);
-//     vehicles v3("bike","",3,1,0,3,2,1.5);
-//     v.push_back(v1);
-//     v.push_back(v3);
-//     v.push_back(v3);
-//     v.push_back(v2);
-//     v.push_back(v1);
-//     v.push_back(v3);
-//     s.runSimulation(v,t,false,0,40);
-//     v3.setYcoordinate(3);
-//     v.push_back(v3);
-//     t.push_back(41);
-//     s.setSignal(true);
-//     s.runSimulation(v,t,true,42);
-//     return 0;
-// }
-
-
 

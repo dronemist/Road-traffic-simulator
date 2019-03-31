@@ -263,6 +263,17 @@ int main(int argc, char const *argv[]) {
 					t++;
 					y+=t_w; 
 				}
+				// code to add autorickshaw to simulation
+				else if(words.at(0)=="AutoRickshaw")
+				{
+					if(y + a_w > road_width)
+						y=0;
+					vcls.push_back(vehicles("AutoRickshaw",words.at(1),a_l,a_w,0,y,a_ms,a_acc));
+					v_times.push_back(t);
+					s1.runSimulation(vcls,v_times,false,t,window,t);
+					t++;
+					y+=a_w; 
+				}
 				if(words.at(0)=="Pass")
 				{
 					s1.runSimulation(vcls,v_times,false,t,window,t+stoi(words.at(1))-1);
