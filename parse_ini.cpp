@@ -66,8 +66,8 @@ int main(int argc, char const *argv[]) {
 	string vtype="NONE";
 	int v_count=0;
 	int t=1;
-	int c_l=0,c_w=0,b_l=0,b_w=0,bus_l=0,bus_w=0,t_l=0,t_w=0;
-	float c_ms=def_speed, c_acc = def_acc, b_ms=def_speed, b_acc = def_acc, bus_ms=def_speed, bus_acc = def_acc, t_ms=def_speed, t_acc = def_acc;
+	int c_l=0,c_w=0,b_l=0,b_w=0,bus_l=0,bus_w=0,t_l=0,t_w=0,a_l=0,a_w=0;
+	float c_ms=def_speed, c_acc = def_acc,a_ms=def_speed,a_acc=def_acc, b_ms=def_speed, b_acc = def_acc, bus_ms=def_speed, bus_acc = def_acc, t_ms=def_speed, t_acc = def_acc;
 
 	string line;
 	string word;
@@ -106,13 +106,13 @@ int main(int argc, char const *argv[]) {
 					{
 						def_speed = stof(words.at(2)); 
 
-						c_ms=def_speed; b_ms=def_speed; bus_ms=def_speed; t_ms=def_speed;
+						c_ms=def_speed; a_ms = def_speed;b_ms=def_speed; bus_ms=def_speed; t_ms=def_speed;
 					}
 				else if(words.at(0)=="Default_Acceleration")
 					 {
 					 	def_acc = stof(words.at(2)); 
 
-						c_acc = def_acc; b_acc = def_acc; bus_acc = def_acc; t_acc = def_acc;
+						c_acc = def_acc;a_acc=def_acc; b_acc = def_acc; bus_acc = def_acc; t_acc = def_acc;
 					 }
 
 				else if(words.at(0)=="Vehicle_Type")
@@ -130,6 +130,8 @@ int main(int argc, char const *argv[]) {
 						bus_l = stoi(words.at(2));
 					if(vtype=="Truck")
 						t_l = stoi(words.at(2));
+					if(vtype == "AutoRickshaw")
+						a_l = stoi(words.at(2));
 				}
 
 				else if(words.at(0)=="Vehicle_Width")
@@ -142,6 +144,8 @@ int main(int argc, char const *argv[]) {
 						bus_w = stoi(words.at(2));
 					if(vtype=="Truck")
 						t_w = stoi(words.at(2));
+					if(vtype=="AutoRickshaw")
+						a_w = stoi(words.at(2));
 				}
 
 				else if(words.at(0)=="Vehicle_MaxSpeed")
@@ -155,6 +159,8 @@ int main(int argc, char const *argv[]) {
 						bus_ms = stof(words.at(2));
 					if(vtype=="Truck")
 						t_ms = stof(words.at(2));
+					if(vtype=="AutoRickshaw")
+						a_ms = stof(words.at(2));
 				}
 
 				else if(words.at(0)=="Vehicle_Acceleration")
@@ -167,6 +173,8 @@ int main(int argc, char const *argv[]) {
 						bus_acc = stof(words.at(2));
 					if(vtype=="Truck")
 						t_acc = stof(words.at(2));
+					if(vtype=="AutoRickshaw")
+						a_acc = stof(words.at(2));
 				}
 
 				else if(words.at(0)=="START")
