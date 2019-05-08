@@ -24,5 +24,5 @@ Ensure that you have glfw installed on your system and then run the `make` comma
  - The vehicles can overtake each other, provided that it is physically possible
  - During overtaking, vehicles blow horns, which is simulated using the system beep '\a'.    
 
-### Configuration file test cases
+### Configuration file/test cases
 We have recorded videos using screencast for 4 ini files.For the 4 configuration files we have 2 videos each,one for opengl and one for terminal output. For the videos we have made the simulations run faster so that vidoes are not very long. The test cases were chosen which could cover all the features like overtaking, how end works when the signal is red and how overtaking from right is preferred to overtaking from the left.  
